@@ -1,8 +1,13 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
+import { ForecastResponse } from '@/api/weather'
 
-export default function Card() {
+interface CardProps {
+  data: ForecastResponse | null;
+}
+
+export default function Card(data: CardProps) {
   
   return (
     <View style={styles.container}>
