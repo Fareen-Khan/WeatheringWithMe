@@ -1,6 +1,6 @@
 import { Text, View, Image, ActivityIndicator } from "react-native";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
-import Card from "@/components/card";
+import CardList from "@/components/card-list";
 import { getCurrentWeather, get5DayForecast } from "@/api/weather";
 import { useEffect, useState } from "react";
 import { WeatherResponse, ForecastResponse } from "@/api/weather";
@@ -74,7 +74,7 @@ export default function Index() {
         </View>
       </View>
       <View style={[styles.subContainer, styles.darkPurple]}>
-        <Card data={forecast} />
+        <CardList data={forecast} />
       </View>
     </>
 
