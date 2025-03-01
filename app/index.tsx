@@ -5,6 +5,7 @@ import CardList from "@/components/card-list";
 import { getCurrentWeather, get5DayForecast } from "@/api/weather";
 import { WeatherResponse, ForecastResponse } from "@/api/weather";
 import {BlurView} from 'expo-blur';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const [data, setData] = useState<WeatherResponse | null>(null);
@@ -48,7 +49,7 @@ export default function Index() {
         resizeMode="cover"
       >
         {/* Top Section */}
-        <View
+        <SafeAreaView
           style={[styles.subContainer, styles.topContainer]}
         >
           <Text style={styles.locationText}>
@@ -106,7 +107,7 @@ export default function Index() {
               )}
             </BlurView>
           </View>
-        </View>
+        </SafeAreaView>
       </ImageBackground>
       {/* Bottom Section (Forecast) */}
       <View style={[styles.subContainer, styles.bottomContainer]}>

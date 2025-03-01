@@ -65,7 +65,14 @@ export const weatherStyles = StyleSheet.create({
 		fontWeight: "bold",
 		textAlign: "center",
 		color: Theme.base.lightA0,
-	},
+  },
+  subDetailsText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: Theme.base.lightA0,
+    opacity: 0.8,
+  },
 
 	forecastContainer: {
 		flexDirection: "row",
@@ -98,7 +105,7 @@ export const weatherStyles = StyleSheet.create({
 	cardSubContainer: {
 		flex: 1,
 		flexDirection: "column",
-		backgroundColor: Theme.primary.a10,
+		backgroundColor: Theme.primary.a0,
 		borderRadius: 10,
 		elevation: 2,
 		paddingVertical: 8,

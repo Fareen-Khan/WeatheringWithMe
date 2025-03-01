@@ -38,7 +38,8 @@ export default function CardList({ data }: CardProps) {
             }}
             style={{ width: 50, height: 50, alignSelf: "center" }}
           />
-          <Text style={styles.detailsText}>{item.main.temp}°C</Text>
+          {/* <Text style={styles.detailsText}>{item.main.temp}°C</Text> */}
+          <Text style={styles.subDetailsText}>Feels Like: </Text>
           <Text style={styles.detailsText}>{item.main.feels_like}°C</Text>
         </View>
       ))}
