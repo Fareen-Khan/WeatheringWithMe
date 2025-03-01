@@ -1,75 +1,107 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native"
+import { Theme } from "@/constants/Colors"
 
+const { height } = Dimensions.get("window")
 export const weatherStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  subContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%", // Ensures it takes the full width
-  },
-  lightPurple: {
-    flex: 2,
-    backgroundColor: "#D8DAFF",
-    borderBottomEndRadius: 20,
-    borderBottomStartRadius: 20,
-    alignItems: "center",
-    justifyContent: "flex-start", // Aligns everything to the top
-    paddingVertical: 20, // Reduce overall padding
-  },
-  darkPurple: {
-    flex: 1,
-    backgroundColor: "#AAB7FD",
-    marginTop: -40,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 10,
-    zIndex: -1,
-  },
-  icon: {
-    width: 120, // Adjust as needed
-    height: 120,
-    alignSelf: "center",
-    marginBottom: -20, // Adjust as needed
-    backgroundColor: "transparent", // Remove background color
-  },
-  locationText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#2A228F",
-    opacity: 0.7,
-  },
-  tempText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#2A228F",
-    marginTop: 5, // Add small spacing
-    elevation: 5, // Add elevation for shadow
-  },
-  detailsText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#2A228F",
-  },
-  forecastContainer: {
-    flexDirection: "row",
-    width: "100%",
-    paddingVertical: 10,
-  },
-  weatherInfo: {
-    alignItems: "center", // Ensures text stays centered
-    gap: 5,
-  },
-  pillBox: {
-    flexDirection: "row",
-    gap: 10,
-    backgroundColor: "#AAB7FD",
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    elevation: 5,
-  }
-});
+	container: {
+		flex: 1,
+		justifyContent: "center",
+	},
+	bgImage: {
+		flex: 1,
+		justifyContent: "center",
+	},
+	subContainer: {
+		alignItems: "center",
+		justifyContent: "center",
+		width: "100%",
+	},
+
+	topContainer: {
+		flex: 2,
+		alignItems: "center",
+		justifyContent: "flex-start",
+    paddingVertical: 20,
+	},
+
+	bottomContainer: {
+		position: "absolute",
+		bottom: 0,
+		left: 0,
+		right: 0,
+		top: height * 0.7,
+		borderTopLeftRadius: 20,
+		borderTopRightRadius: 20,
+		backgroundColor: Theme.primary.a0,
+		alignItems: "center",
+		justifyContent: "center",
+		paddingVertical: 10,
+	},
+
+	icon: {
+		width: 120,
+		height: 120,
+		alignSelf: "center",
+		marginBottom: -20,
+		backgroundColor: "transparent",
+		color: "white",
+	},
+
+	locationText: {
+		fontSize: 20,
+		fontWeight: "bold",
+		color: Theme.base.lightA0,
+		opacity: 0.8,
+	},
+	tempText: {
+		fontSize: 24,
+		fontWeight: "bold",
+		color: Theme.base.lightA0,
+		marginTop: 5,
+		elevation: 5,
+	},
+	detailsText: {
+		fontSize: 16,
+		fontWeight: "bold",
+		textAlign: "center",
+		color: Theme.base.lightA0,
+	},
+
+	forecastContainer: {
+		flexDirection: "row",
+		width: "100%",
+		paddingVertical: 10,
+	},
+	weatherInfo: {
+		alignItems: "center",
+		gap: 5,
+	},
+
+	pillBox: {
+		flexDirection: "row",
+		gap: 10,
+		// backgroundColor: Theme.tonal.a20,
+		borderRadius: 20,
+		paddingHorizontal: 15,
+		paddingVertical: 5,
+    elevation: 2,
+    overflow: "hidden",
+	},
+
+	cardContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		gap: 10,
+		paddingHorizontal: 10,
+	},
+	cardSubContainer: {
+		flex: 1,
+		flexDirection: "column",
+		backgroundColor: Theme.primary.a10,
+		borderRadius: 10,
+		elevation: 2,
+		paddingVertical: 8,
+		alignItems: "center",
+	},
+})
