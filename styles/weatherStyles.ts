@@ -21,7 +21,7 @@ export const weatherStyles = StyleSheet.create({
 		flex: 2,
 		alignItems: "center",
 		justifyContent: "flex-start",
-    paddingVertical: 20,
+		paddingVertical: 20,
 	},
 
 	bottomContainer: {
@@ -84,8 +84,8 @@ export const weatherStyles = StyleSheet.create({
 		borderRadius: 20,
 		paddingHorizontal: 15,
 		paddingVertical: 5,
-    elevation: 2,
-    overflow: "hidden",
+		elevation: 2,
+		overflow: "hidden",
 	},
 
 	cardContainer: {

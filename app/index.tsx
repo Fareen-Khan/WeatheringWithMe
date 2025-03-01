@@ -35,13 +35,17 @@ export default function Index() {
     return <Text>Error loading weather data</Text>;
   }
 
+  const currentHour = Math.floor(Date.now() / 1000);
+  const backgroundImage =
+    currentHour >= data.sys.sunset || currentHour <= data.sys.sunrise
+      ? require("@/assets/images/night_time.png")
+      : require("@/assets/images/day_time.png");
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("@/assets/images/bkgImage.jpg")}
+        source={backgroundImage}
         style={styles.bgImage}
         resizeMode="cover"
-        blurRadius={2}
       >
         {/* Top Section */}
         <View
@@ -57,9 +61,9 @@ export default function Index() {
             style={styles.icon}
           />
           <View style={styles.weatherInfo}>
-            <Text style={styles.tempText}>{data.main.temp}°C</Text>
+            <Text style={styles.tempText}>{data.main.feels_like}°C</Text>
             <Text style={styles.detailsText}>
-              Feels like: {data.main.feels_like}°C
+              Actual: {data.main.temp}°C
             </Text>
 
             {/* Pill Box for extra info */}
