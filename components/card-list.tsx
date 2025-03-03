@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ActivityIndicator, Image, StyleSheet } from "react-native";
+import { View, Text, ActivityIndicator, Image, ScrollView } from "react-native";
 import { ForecastResponse } from "@/api/weather";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface CardProps {
   data: ForecastResponse | null;
@@ -23,9 +24,14 @@ export default function CardList({ data }: CardProps) {
   }
 
   return (
-    <View style={styles.cardContainer}>
+    <ScrollView
+      horizontal={true}
+      contentContainerStyle={styles.cardContainer}
+      style={{flexGrow: 0}}
+    >
       {data.list.map((item, index) => (
-        <View key={index} style={styles.cardSubContainer}>
+        <View key={index} style={styles.cardSubContainer}
+        >
           <Text style={styles.detailsText}>
             {new Date(item.dt * 1000).toLocaleTimeString("en-US", {
               hour: "numeric",
@@ -43,6 +49,6 @@ export default function CardList({ data }: CardProps) {
           <Text style={styles.detailsText}>{item.main.feels_like}°C</Text>
         </View>
       ))}
-    </View>
+    </ScrollView>
   );
 }

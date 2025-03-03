@@ -4,8 +4,9 @@ import { weatherStyles as styles } from "@/styles/weatherStyles";
 import CardList from "@/components/card-list";
 import { getCurrentWeather, get5DayForecast } from "@/api/weather";
 import { WeatherResponse, ForecastResponse } from "@/api/weather";
-import {BlurView} from 'expo-blur';
+import { BlurView } from 'expo-blur';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Index() {
   const [data, setData] = useState<WeatherResponse | null>(null);
@@ -50,18 +51,18 @@ export default function Index() {
       >
         {/* Top Section */}
         <SafeAreaView
-          style={[styles.subContainer, styles.topContainer]}
+          style={[styles.subContainer, styles.topContainer, { flex: 1, justifyContent: "space-between" }]}
         >
-          <Text style={styles.locationText}>
-            {data.name}, {data.sys.country}
-          </Text>
-          <Image
-            source={{
-              uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
-            }}
-            style={styles.icon}
-          />
           <View style={styles.weatherInfo}>
+            <Text style={styles.locationText}>
+              {data.name}, {data.sys.country}
+            </Text>
+            <Image
+              source={{
+                uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
+              }}
+              style={styles.icon}
+            />
             <Text style={styles.tempText}>{data.main.feels_like}°C</Text>
             <Text style={styles.detailsText}>
               Actual: {data.main.temp}°C
@@ -107,12 +108,10 @@ export default function Index() {
               )}
             </BlurView>
           </View>
+          {/* Should be at bottom of screen*/}
+          <CardList data={forecast} />
         </SafeAreaView>
       </ImageBackground>
-      {/* Bottom Section (Forecast) */}
-      <View style={[styles.subContainer, styles.bottomContainer]}>
-        <CardList data={forecast} />
-      </View>
     </View>
   );
 }
