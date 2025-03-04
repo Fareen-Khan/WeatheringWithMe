@@ -6,7 +6,6 @@ import { getCurrentWeather, get5DayForecast } from "@/api/weather";
 import { WeatherResponse, ForecastResponse } from "@/api/weather";
 import { BlurView } from 'expo-blur';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Index() {
   const [data, setData] = useState<WeatherResponse | null>(null);
@@ -63,9 +62,9 @@ export default function Index() {
               }}
               style={styles.icon}
             />
-            <Text style={styles.tempText}>{data.main.feels_like}°C</Text>
+            <Text style={styles.tempText}>{Math.round(data.main.feels_like)}°C</Text>
             <Text style={styles.detailsText}>
-              Actual: {data.main.temp}°C
+              Actual: {Math.round(data.main.temp)}°C
             </Text>
 
             {/* Pill Box for extra info */}
@@ -84,7 +83,7 @@ export default function Index() {
                   source={require("@/assets/icons/wind.png")}
                   style={{ width: 20, height: 20 }}
                 />
-                <Text style={styles.detailsText}>{data.wind?.speed} m/s</Text>
+                <Text style={styles.detailsText}>{data.wind?.speed != null ? Math.round(data.wind.speed) : "N/A"} m/s</Text>
               </View>
               {/* Snow (if present) */}
               {data.snow && (
@@ -109,7 +108,9 @@ export default function Index() {
             </BlurView>
           </View>
           {/* Should be at bottom of screen*/}
-          <CardList data={forecast} />
+          <View style={{ paddingHorizontal: 10 }}>
+            <CardList data={forecast} />
+          </View>
         </SafeAreaView>
       </ImageBackground>
     </View>

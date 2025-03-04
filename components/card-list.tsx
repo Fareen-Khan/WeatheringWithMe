@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator, Image, ScrollView } from "react-native";
 import { ForecastResponse } from "@/api/weather";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
-import { LinearGradient } from "expo-linear-gradient";
 
 interface CardProps {
   data: ForecastResponse | null;
@@ -33,7 +32,15 @@ export default function CardList({ data }: CardProps) {
         <View key={index} style={styles.cardSubContainer}
         >
           <Text style={styles.detailsText}>
-            {new Date(item.dt * 1000).toLocaleTimeString("en-US", {
+            {
+              new Date(item.dt * 1000).toLocaleDateString("en-US", {
+                weekday: "long",
+              })
+            }
+          </Text>
+          <Text style={styles.detailsText}>
+            {
+              new Date(item.dt * 1000).toLocaleTimeString("en-US", {
               hour: "numeric",
               hour12: true,
             })}
@@ -44,9 +51,8 @@ export default function CardList({ data }: CardProps) {
             }}
             style={{ width: 50, height: 50, alignSelf: "center" }}
           />
-          {/* <Text style={styles.detailsText}>{item.main.temp}°C</Text> */}
           <Text style={styles.subDetailsText}>Feels Like: </Text>
-          <Text style={styles.detailsText}>{item.main.feels_like}°C</Text>
+          <Text style={styles.detailsText}>{Math.round(item.main.feels_like)}°C</Text>
         </View>
       ))}
     </ScrollView>

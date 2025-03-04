@@ -122,7 +122,7 @@ export const getCurrentWeather = async (city: string) => {
 };
 
 export const get5DayForecast = async (city: string) => {
-  const url = `${BASE_URL}forecast?q=${city}&appid=${API_KEY}&units=${UNITS}&cnt=5`;
+  const url = `${BASE_URL}forecast?q=${city}&appid=${API_KEY}&units=${UNITS}&cnt=8`;
 
   const response = await fetch(url);
   const data = await response.json();

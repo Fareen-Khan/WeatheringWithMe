@@ -101,14 +101,15 @@ export const weatherStyles = StyleSheet.create({
 		justifyContent: "center",
 		gap: 10,
 		paddingHorizontal: 10,
+
 	},
 	cardSubContainer: {
 		flex: 1,
 		flexDirection: "column",
 		backgroundColor: "transparent",
-    borderRadius: 10,
+		borderRadius: 10,
 		paddingVertical: 8,
-    alignItems: "center",
-    width:100
+		alignItems: "center",
+		width: 100,
 	},
 })
