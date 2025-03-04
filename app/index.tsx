@@ -4,6 +4,7 @@ import { weatherStyles as styles } from "@/styles/weatherStyles";
 import CardList from "@/components/card-list";
 import { getCurrentWeather, get5DayForecast } from "@/api/weather";
 import { WeatherResponse, ForecastResponse } from "@/api/weather";
+import { getRandomOutfit } from "@/api/outfit";
 import { BlurView } from 'expo-blur';
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -11,6 +12,7 @@ export default function Index() {
   const [data, setData] = useState<WeatherResponse | null>(null);
   const [forecast, setForecast] = useState<ForecastResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [outfit, setOutfit] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -19,6 +21,7 @@ export default function Index() {
         const forecastData = await get5DayForecast("Toronto");
         setForecast(forecastData as ForecastResponse);
         setData(data as WeatherResponse);
+        setOutfit(getRandomOutfit(data.main.temp));
       } catch (error) {
         console.error("Error fetching weather data:", error);
       } finally {
@@ -36,15 +39,10 @@ export default function Index() {
     return <Text>Error loading weather data</Text>;
   }
 
-  const currentHour = Math.floor(Date.now() / 1000);
-  const backgroundImage =
-    currentHour >= data.sys.sunset || currentHour <= data.sys.sunrise
-      ? require("@/assets/images/night_time.png")
-      : require("@/assets/images/day_time.png");
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={backgroundImage}
+        source={require("@/assets/images/night_time.png")}
         style={styles.bgImage}
         resizeMode="cover"
       >
@@ -107,6 +105,16 @@ export default function Index() {
               )}
             </BlurView>
           </View>
+          {/* ootd */}
+          {/* TODO: add fallback image */}
+          <Image
+            source={outfit != null ? outfit : require("@/assets/images/outfits/1-2.png")}
+            style={{
+              // flex: 1,
+              height: "45%",
+              resizeMode: "contain",
+            }}
+          />
           {/* Should be at bottom of screen*/}
           <View style={{ paddingHorizontal: 10 }}>
             <CardList data={forecast} />
