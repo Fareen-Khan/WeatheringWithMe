@@ -7,18 +7,25 @@ import { WeatherResponse, ForecastResponse } from "@/api/weather";
 import { getRandomOutfit } from "@/api/outfit";
 import { BlurView } from 'expo-blur';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Link } from 'expo-router';
+import Feather from '@expo/vector-icons/Feather';
+import { useLocalSearchParams } from "expo-router";
 
 export default function Index() {
   const [data, setData] = useState<WeatherResponse | null>(null);
   const [forecast, setForecast] = useState<ForecastResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [outfit, setOutfit] = useState<string | null>(null);
+  // Extract location from search params and default to "Toronto" if not provided
+  const { location } = useLocalSearchParams();
+  const city = typeof location === "string" ? location : "Toronto";
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const data = await getCurrentWeather("Toronto");
-        const forecastData = await get5DayForecast("Toronto");
+        console.log("Fetching weather for:", city);
+        const data = await getCurrentWeather(city);
+        const forecastData = await get5DayForecast(city);
         setForecast(forecastData as ForecastResponse);
         setData(data as WeatherResponse);
         setOutfit(getRandomOutfit(data.main.temp));
@@ -29,7 +36,7 @@ export default function Index() {
       }
     };
     fetchWeather();
-  }, []);
+  }, [city]);
 
   if (loading) {
     return <ActivityIndicator size="large" color="blue" />;
@@ -51,9 +58,12 @@ export default function Index() {
           style={[styles.subContainer, styles.topContainer, { flex: 1, justifyContent: "space-between" }]}
         >
           <View style={styles.weatherInfo}>
-            <Text style={styles.locationText}>
-              {data.name}, {data.sys.country}
-            </Text>
+            <Link href={"/search"}>
+              <Feather name="search" size={20} color="white" />
+              <Text style={styles.locationText}>
+                {data.name}, {data.sys.country}
+              </Text>
+            </Link>
             <Image
               source={{
                 uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
@@ -69,38 +79,26 @@ export default function Index() {
             <BlurView style={styles.pillBox}>
               {/* Humidity */}
               <View style={{ flexDirection: "row" }}>
-                <Image
-                  source={require("@/assets/icons/humidity.png")}
-                  style={{ width: 20, height: 20 }}
-                />
+                <Feather name="droplet" size={20} color="black" />
                 <Text style={styles.detailsText}>{data.main.humidity}%</Text>
               </View>
               {/* Wind */}
               <View style={{ flexDirection: "row" }}>
-                <Image
-                  source={require("@/assets/icons/wind.png")}
-                  style={{ width: 20, height: 20 }}
-                />
+                <Feather name="wind" size={20} color="black" />
                 <Text style={styles.detailsText}>{data.wind?.speed != null ? Math.round(data.wind.speed) : "N/A"} m/s</Text>
               </View>
               {/* Snow (if present) */}
               {data.snow && (
                 <View style={{ flexDirection: "row" }}>
-                  <Image
-                    source={require("@/assets/icons/snow.png")}
-                    style={{ width: 20, height: 20 }}
-                  />
-                  <Text style={styles.detailsText}>{data.snow["1h"]} cm</Text>
+                  <Feather name="cloud-snow" size={24} color="black" />
+                  <Text style={styles.detailsText}>{Math.round(data.snow["1h"] ?? 0)} cm</Text>
                 </View>
               )}
               {/* Rain (if present) */}
               {data.rain && (
                 <View style={{ flexDirection: "row" }}>
-                  <Image
-                    source={require("@/assets/icons/rain.png")}
-                    style={{ width: 20, height: 20 }}
-                  />
-                  <Text style={styles.detailsText}>{data.rain["1h"]} mm</Text>
+                  <Feather name="cloud-rain" size={24} color="black" />
+                  <Text style={styles.detailsText}>{Math.round(data.rain["1h"] ?? 0)} mm</Text>
                 </View>
               )}
             </BlurView>
