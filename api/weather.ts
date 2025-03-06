@@ -22,7 +22,6 @@ export const get5DayForecast = async (city: string) => {
 };
 
 export const getListofCities = async (search: string) => {
-  console.log("entering func")
   const url = `${GEO_URL}${search}&limit=10&appid=${API_KEY}`;
   const response = await fetch(url);
   const data = await response.json();

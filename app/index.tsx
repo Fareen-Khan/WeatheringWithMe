@@ -23,7 +23,6 @@ export default function Index() {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        console.log("Fetching weather for:", city);
         const data = await getCurrentWeather(city);
         const forecastData = await get5DayForecast(city);
         setForecast(forecastData as ForecastResponse);

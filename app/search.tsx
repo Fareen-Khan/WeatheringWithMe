@@ -13,9 +13,7 @@ export default function Search() {
     const getResults = async () => {
       try {
         const searchResults = await getListofCities(location);
-        // Now we set the results to our array state
         setLocationResults(searchResults);
-        console.log(searchResults);
       } catch (error) {
         console.error("Error fetching cities:", error);
       }
@@ -48,8 +46,21 @@ export default function Search() {
         ) : (
           Array.isArray(locationResults) &&
             locationResults.map((item, index) => (
-            // make pressable such that it auto fills the search bar
-            <Text key={index}>{item.name}, {item.state ?? "N/A"}, {item.country}</Text>
+              <Pressable
+                style={({ pressed }) => [
+                  {
+                    backgroundColor: pressed ? "#ccc" : "transparent",
+                    borderRadius: 10,
+                    overflow: "hidden",
+                  }
+                ]
+                }
+                onPress={() => {
+                  router.back()
+                  router.setParams({ location: String(item.name+","+item.state+","+item.country) })
+                }}>
+              <Text key={index}>{item.name}, {item.state ?? "N/A"}, {item.country}</Text>
+            </Pressable>
           ))
         )}
       </View>
