@@ -1,65 +1,85 @@
-import React, { useState } from "react";
-import { Text, View, TextInput, StyleSheet } from "react-native";
-import { Link } from 'expo-router';
+import React, { useEffect, useState } from "react";
+import { Text, View, TextInput, StyleSheet, Pressable } from "react-native";
+import { Link, router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { getListofCities } from "@/api/weather";
+import { GeoResponse } from "@/utils/types";
 
 export default function Search() {
-  const [location, setLocation] = useState("Toronto");
-
+  const [location, setLocation] = useState("");
+  const [locationResults, setLocationResults] = useState<GeoResponse[] | { cod: number; message: string }>([]); 
+  useEffect(() => {
+    const getResults = async () => {
+      try {
+        const searchResults = await getListofCities(location);
+        // Now we set the results to our array state
+        setLocationResults(searchResults);
+        console.log(searchResults);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+    getResults()
+  }, [location])
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Link href="/" style={styles.link}>
+    <SafeAreaView >
+      <View style={styles.container}>
+        <Pressable onPress={() => router.back()}>
           <Feather name="arrow-left" size={20} color="black" />
-        </Link>
-        <Text style={styles.headerText}>Search</Text>
-      </View>
-      <TextInput
-        style={styles.textInput}
-        onChangeText={setLocation}
-        value={location}
-        placeholder="Enter A Location"
-      />
-      <View style={styles.searchContainer}>
-        <Link
-          href={{
-            pathname: "/",
-            params: { location: location }
-          }}
-          style={styles.link}
-        >
+        </Pressable>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={setLocation}
+          value={location}
+          placeholder="Enter A Location"
+          autoFocus={true}
+        />
+        <Pressable onPress={() => {
+          router.back()
+          router.setParams({ location: location })
+        }}>
           <Feather name="search" size={20} color="black" />
-        </Link>
-        <Text style={styles.searchText}>Enter</Text>
+        </Pressable>
       </View>
-    </View>
+      <View style={styles.resultsContainer}>
+        {!Array.isArray(locationResults) && locationResults.cod === 400 ? (
+          <></>
+        ) : (
+          Array.isArray(locationResults) &&
+            locationResults.map((item, index) => (
+            // make pressable such that it auto fills the search bar
+            <Text key={index}>{item.name}, {item.state ?? "N/A"}, {item.country}</Text>
+          ))
+        )}
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: "row",
     padding: 16,
     backgroundColor: "#fff",
+    alignItems: "center",
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16
   },
-  link: {
-    marginRight: 8
-  },
   headerText: {
     fontSize: 18,
     fontWeight: "bold"
   },
   textInput: {
+    flex: 1,
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 8,
+    paddingHorizontal: 8,
     borderRadius: 4,
-    marginBottom: 16,
+    marginHorizontal: 8
   },
   searchContainer: {
     flexDirection: "row",
@@ -68,5 +88,9 @@ const styles = StyleSheet.create({
   searchText: {
     fontSize: 16,
     marginLeft: 8
+  },
+  resultsContainer: {
+    alignItems: "center",
+    gap: 10,
   },
 });

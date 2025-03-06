@@ -3,7 +3,7 @@ import { Text, View, Image, ActivityIndicator, ImageBackground } from "react-nat
 import { weatherStyles as styles } from "@/styles/weatherStyles";
 import CardList from "@/components/card-list";
 import { getCurrentWeather, get5DayForecast } from "@/api/weather";
-import { WeatherResponse, ForecastResponse } from "@/api/weather";
+import { WeatherResponse, ForecastResponse } from "@/utils/types";
 import { getRandomOutfit } from "@/api/outfit";
 import { BlurView } from 'expo-blur';
 import { SafeAreaView } from "react-native-safe-area-context";
