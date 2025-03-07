@@ -41,9 +41,10 @@ export default function Index() {
     return <ActivityIndicator size="large" color="blue" />;
   }
 
-  if (!data) {
+  if (!data || !data.sys) {
     return <Text>Error loading weather data</Text>;
   }
+  
 
   return (
     <View style={styles.container}>
@@ -78,25 +79,25 @@ export default function Index() {
             <BlurView style={styles.pillBox}>
               {/* Humidity */}
               <View style={{ flexDirection: "row" }}>
-                <Feather name="droplet" size={20} color="black" />
+                <Feather name="droplet" size={20} color="white" />
                 <Text style={styles.detailsText}>{data.main.humidity}%</Text>
               </View>
               {/* Wind */}
               <View style={{ flexDirection: "row" }}>
-                <Feather name="wind" size={20} color="black" />
+                <Feather name="wind" size={20} color="white" />
                 <Text style={styles.detailsText}>{data.wind?.speed != null ? Math.round(data.wind.speed) : "N/A"} m/s</Text>
               </View>
               {/* Snow (if present) */}
               {data.snow && (
                 <View style={{ flexDirection: "row" }}>
-                  <Feather name="cloud-snow" size={24} color="black" />
+                  <Feather name="cloud-snow" size={24} color="white" />
                   <Text style={styles.detailsText}>{Math.round(data.snow["1h"] ?? 0)} cm</Text>
                 </View>
               )}
               {/* Rain (if present) */}
               {data.rain && (
                 <View style={{ flexDirection: "row" }}>
-                  <Feather name="cloud-rain" size={24} color="black" />
+                  <Feather name="cloud-rain" size={24} color="white" />
                   <Text style={styles.detailsText}>{Math.round(data.rain["1h"] ?? 0)} mm</Text>
                 </View>
               )}
