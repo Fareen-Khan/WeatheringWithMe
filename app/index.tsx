@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, ActivityIndicator, ImageBackground } from "react-native";
+import { Text, View, Image, ActivityIndicator, ImageBackground, Pressable } from "react-native";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
 import CardList from "@/components/card-list";
 import { getCurrentWeather, get5DayForecast } from "@/api/weather";
@@ -19,6 +19,7 @@ export default function Index() {
   const [outfit, setOutfit] = useState<string | null>(null);
   // Extract location from search params and default to "Toronto" if not provided
   const { location } = useLocalSearchParams();
+  // Default to Toronto if location is not provided and user not searching
   const city = typeof location === "string" ? location : "Toronto";
 
   // A helper function to fetch weather by a city name.
@@ -29,11 +30,37 @@ export default function Index() {
       setForecast(forecastData as ForecastResponse);
       setData(weatherData as WeatherResponse);
       setOutfit(getRandomOutfit(weatherData.main.temp));
-      console.log("weather data is", data)
     } catch (error) {
       console.error("Error fetching weather data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // get current location and fetch weather for it
+  const fetchCurrentLocationAndWeather = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        // Fall back to a default city if permission isn't granted.
+        fetchWeatherForCity("Toronto");
+        return;
+      }
+      const currentLocation = await Location.getCurrentPositionAsync({});
+      const geocode = await Location.reverseGeocodeAsync(currentLocation.coords);
+      if (geocode.length > 0 && geocode[0].city) {
+        // Combine city and country into a string
+        const userCity = geocode[0].city;
+        const userCountry = geocode[0].isoCountryCode;
+        fetchWeatherForCity(`${userCity},${userCountry}`);
+      } else {
+        // If geocoding fails, fallback to a default city.
+        fetchWeatherForCity("Toronto");
+      }
+    } catch (error) {
+      console.error("Error retrieving location:", error);
+      // Fallback in case of error.
+      fetchWeatherForCity("Toronto");
     }
   };
 
@@ -42,34 +69,7 @@ export default function Index() {
       console.log("Using searched location:", location);
       fetchWeatherForCity(location);
     } else {
-      const fetchLocationAndWeather = async () => {
-        try {
-          const { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== "granted") {
-            // Fall back to a default city if permission isn't granted.
-            fetchWeatherForCity("Toronto");
-            return;
-          }
-          const currentLocation = await Location.getCurrentPositionAsync({});
-          const geocode = await Location.reverseGeocodeAsync(currentLocation.coords);
-          if (geocode.length > 0 && geocode[0].city) {
-            // Combine city and country into a string
-            const userCity = geocode[0].city;
-            const userCountry = geocode[0].isoCountryCode; 
-            fetchWeatherForCity(`${userCity},${userCountry}`);
-          } else {
-            // If geocoding fails, fallback to a default city.
-            fetchWeatherForCity("Toronto");
-          }
-        } catch (error) {
-          console.error("Error retrieving location:", error);
-          // Fallback in case of error.
-          fetchWeatherForCity("Toronto");
-        }
-      };
-
-      fetchLocationAndWeather();
-    
+      fetchCurrentLocationAndWeather();
     }
   }, [city]);
 
@@ -94,12 +94,19 @@ export default function Index() {
           style={[styles.subContainer, styles.topContainer, { flex: 1, justifyContent: "space-between" }]}
         >
           <View style={styles.weatherInfo}>
-            <Link href={"/search"}>
-              <Feather name="search" size={20} color="white" />
-              <Text style={styles.locationText}>
-                {data.name}, {data.sys.country}
-              </Text>
-            </Link>
+            <View style={{ flexDirection: "row", gap: 10 , alignItems: "center" }}>
+              <Link href={"/search"}>
+                <Feather name="search" size={20} color="white" />
+                <Text style={styles.locationText}>
+                  {data.name}, {data.sys.country}
+                </Text>
+              </Link>
+              <Pressable onPress={() => {
+                fetchCurrentLocationAndWeather()
+              }}>
+                <Feather name="map-pin" size={20} color="white" />
+              </Pressable>
+            </View>
             <Image
               source={{
                 uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
