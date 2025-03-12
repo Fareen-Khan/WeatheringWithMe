@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import { useLocalSearchParams } from "expo-router";
+import * as Location from "expo-location";
 
 export default function Index() {
   const [data, setData] = useState<WeatherResponse | null>(null);
@@ -20,21 +21,56 @@ export default function Index() {
   const { location } = useLocalSearchParams();
   const city = typeof location === "string" ? location : "Toronto";
 
+  // A helper function to fetch weather by a city name.
+  const fetchWeatherForCity = async (cityName: string) => {
+    try {
+      const weatherData = await getCurrentWeather(cityName);
+      const forecastData = await get5DayForecast(cityName);
+      setForecast(forecastData as ForecastResponse);
+      setData(weatherData as WeatherResponse);
+      setOutfit(getRandomOutfit(weatherData.main.temp));
+      console.log("weather data is", data)
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const data = await getCurrentWeather(city);
-        const forecastData = await get5DayForecast(city);
-        setForecast(forecastData as ForecastResponse);
-        setData(data as WeatherResponse);
-        setOutfit(getRandomOutfit(data.main.temp));
-      } catch (error) {
-        console.error("Error fetching weather data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchWeather();
+    if (location && typeof location === "string") {
+      console.log("Using searched location:", location);
+      fetchWeatherForCity(location);
+    } else {
+      const fetchLocationAndWeather = async () => {
+        try {
+          const { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== "granted") {
+            // Fall back to a default city if permission isn't granted.
+            fetchWeatherForCity("Toronto");
+            return;
+          }
+          const currentLocation = await Location.getCurrentPositionAsync({});
+          const geocode = await Location.reverseGeocodeAsync(currentLocation.coords);
+          if (geocode.length > 0 && geocode[0].city) {
+            // Combine city and country into a string
+            const userCity = geocode[0].city;
+            const userCountry = geocode[0].isoCountryCode; 
+            fetchWeatherForCity(`${userCity},${userCountry}`);
+          } else {
+            // If geocoding fails, fallback to a default city.
+            fetchWeatherForCity("Toronto");
+          }
+        } catch (error) {
+          console.error("Error retrieving location:", error);
+          // Fallback in case of error.
+          fetchWeatherForCity("Toronto");
+        }
+      };
+
+      fetchLocationAndWeather();
+    
+    }
   }, [city]);
 
   if (loading) {
