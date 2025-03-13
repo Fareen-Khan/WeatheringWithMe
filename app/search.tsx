@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView } from "react-native";
+import { View, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView } from "react-native";
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getListofCities } from "@/api/weather";
 import { GeoResponse } from "@/utils/types";
-import { Theme } from "@/constants/Colors"
-
+import { Theme } from "@/styles/Colors"
+import { LocationRow } from "@/components/locationRow";
 
 export default function Search() {
   const [location, setLocation] = useState("");
-  const [locationResults, setLocationResults] = useState<GeoResponse[] | { cod: number; message: string }>([]); 
+  const [locationResults, setLocationResults] = useState<GeoResponse[] | { cod: number; message: string }>([]);
+
   useEffect(() => {
+    if (location.trim() === "") {
+      console.log("location is empty showing favorites")
+      return
+    }
     const getResults = async () => {
       try {
         const searchResults = await getListofCities(location);
@@ -29,7 +34,7 @@ export default function Search() {
       resizeMode="cover"
       blurRadius={10}
     >
-      <SafeAreaView style={{ flex: 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={[styles.container]}>
           <Pressable onPress={() => router.back()}>
             <Feather name="arrow-left" size={20} color="white" />
@@ -44,37 +49,19 @@ export default function Search() {
           />
         </View>
         <ScrollView contentContainerStyle={styles.resultsContainer}>
-          {!Array.isArray(locationResults) && locationResults.cod === 400 ? (
-            <></>
+          {(!location || location.trim() === "") ? (
+            <LocationRow isFavorite={true} data={[]} />
           ) : (
-            Array.isArray(locationResults) &&
-              locationResults.map((item, index) => (
-                <Pressable
-                  key={index}
-                  style={({ pressed }) => [
-                    {
-                      backgroundColor: pressed ? "#695DA2" : "transparent",
-                      borderRadius: 10,
-                      overflow: "hidden",
-                      width: "100%",
-                      alignSelf: "center",
-                      paddingHorizontal: 10,
-                      marginVertical: 10,
-                    }
-                  ]
-                  }
-                  onPress={() => {
-                    router.back()
-                    let cityQuery = item.name;
-                    if (item.country && item.country !== "N/A") {
-                      cityQuery += `,${item.country}`;
-                    }
-                    router.setParams({ location: cityQuery });
-                  }}>
-                <Text style={{ fontSize: 16, color: Theme.base.lightA0, padding: 10}}>{item.name}, {item.state ?? "N/A"}, {item.country}</Text>
-              </Pressable>
-            ))
-          )}
+            !Array.isArray(locationResults) && locationResults.cod === 400 ? (
+              <></>
+            ) : (
+              Array.isArray(locationResults) &&
+              <>
+                <LocationRow isFavorite={false} data={locationResults as GeoResponse[]} />
+              </>
+            )
+          )
+          }
         </ScrollView>
       </SafeAreaView>
     </ImageBackground>

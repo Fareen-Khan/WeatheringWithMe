@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native"
-import { Theme } from "@/constants/Colors"
+import { Theme } from "@/styles/Colors"
 
 const { height } = Dimensions.get("window")
 export const weatherStyles = StyleSheet.create({
@@ -101,7 +101,6 @@ export const weatherStyles = StyleSheet.create({
 		justifyContent: "center",
 		gap: 10,
 		paddingHorizontal: 10,
-
 	},
 	cardSubContainer: {
 		flex: 1,
