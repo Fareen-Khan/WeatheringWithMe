@@ -1,50 +1,27 @@
-# Welcome to your Expo app 👋
+# Weathering With Me 🌤️👗
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile app that suggests outfits based on current weather conditions. Weathering With Me combines real-time weather data with a flexible rule engine to recommend appropriate clothing and accessories—helping users dress confidently for any forecast.
 
-## Get started
+---
 
-1. Install dependencies
+## 🚀 Features
 
-   ```bash
-   npm install
-   ```
+- **Real-Time Weather Fetching**: Uses OpenWeatherMap API (or your preferred provider) to get current temperature, conditions, wind speed, and precipitation  
+- **Smart Outfit Engine**: Maps weather metrics to garment categories (e.g., shells, sweaters, jackets)
+- **Geolocation & Manual Input**: Automatically detects your location or lets you search by city name
 
-2. Start the app
+---
 
-   ```bash
-    npx expo start
-   ```
+## 🎬 Usage
 
-In the output, you'll find options to open the app in a
+- Open the app on your device or emulator
+- Allow location permissions or enter a city name
+- View the current weather and recommended outfit
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🔍 How It Works
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1. Fetch: Retrieves weather data from OpenWeatherMap
+2. Evaluate: The outfit engine applies rules
+3. Display: Renders a styled outfit card with images
