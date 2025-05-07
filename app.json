@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "WeatherApp2.0",
-    "slug": "WeatherApp2.0",
+    "name": "WeatherApp2",
+    "slug": "WeatherApp2",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icons/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -16,7 +16,7 @@
 		},
     "android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/adaptive-icon.png",
+				"foregroundImage": "./assets/icons/icon.png",
 				"backgroundColor": "#ffffff"
 			},
 			"permissions": ["ACCESS_FINE_LOCATION"]
