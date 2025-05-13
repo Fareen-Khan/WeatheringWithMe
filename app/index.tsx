@@ -80,8 +80,8 @@ export default function Index() {
   if (!data || !data.sys) {
     return <Text>Error loading weather data</Text>;
   }
-  
 
+// ---- VIEW ----
   return (
     <View style={styles.container}>
       <ImageBackground

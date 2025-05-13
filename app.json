@@ -9,18 +9,20 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-			"supportsTablet": true,
-			"infoPlist": {
-				"NSLocationWhenInUseUsageDescription": "This app needs access to your location to show your current position."
-			}
-		},
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to show your current position."
+      }
+    },
     "android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/icons/icon.png",
-				"backgroundColor": "#ffffff"
-			},
-			"permissions": ["ACCESS_FINE_LOCATION"]
-		},
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ]
+    },
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -36,7 +38,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true
