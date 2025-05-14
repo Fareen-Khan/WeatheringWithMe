@@ -84,20 +84,21 @@ export default function Index() {
     return <Text>Error loading weather data</Text>;
   }
 
-// ---- VIEW ----
+  // ---- VIEW ----
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: "transparent" }]} >
       <ImageBackground
         source={require("@/assets/images/night_time.png")}
-        style={styles.bgImage}
+        style={[styles.bgImage, { flex: 1 }]}
         resizeMode="cover"
       >
         {/* Top Section */}
         <SafeAreaView
           style={[styles.subContainer, styles.topContainer, { flex: 1, justifyContent: "space-between" }]}
+          edges={["top", "bottom"]}
         >
           <View style={styles.weatherInfo}>
-            <View style={{ flexDirection: "row", gap: 10 , alignItems: "center" }}>
+            <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
               <Link href={"/search"}>
                 <Feather name="search" size={20} color="white" />
                 <Text style={styles.locationText}>
@@ -120,7 +121,6 @@ export default function Index() {
             <Text style={styles.detailsText}>
               Actual: {Math.round(data.main.temp)}°C
             </Text>
-
             {/* Pill Box for extra info */}
             <BlurView style={styles.pillBox}>
               {/* Humidity */}
@@ -164,7 +164,10 @@ export default function Index() {
             <CardList data={forecast} />
           </View>
         </SafeAreaView>
+        <SafeAreaView style={{ opacity: 0 }} />
       </ImageBackground>
+
     </View>
+
   );
 }
