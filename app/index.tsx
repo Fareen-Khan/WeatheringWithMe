@@ -12,6 +12,9 @@ import Feather from '@expo/vector-icons/Feather';
 import { useLocalSearchParams } from "expo-router";
 import * as Location from "expo-location";
 
+import { addClothingItem, deleteClothingItem, getAllClothingItems, addItemTag, getTagsForItems, getItemsForTag, getAllTags } from "@/utils/db";
+import { ClothingItem } from "@/utils/db";
+
 export default function Index() {
   const [data, setData] = useState<WeatherResponse | null>(null);
   const [forecast, setForecast] = useState<ForecastResponse | null>(null);
