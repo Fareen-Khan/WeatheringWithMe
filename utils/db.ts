@@ -2,14 +2,14 @@ import * as SQLite from "expo-sqlite"
 import type { SQLiteDatabase } from "expo-sqlite"
 
 export interface ClothingItem {
-	id: string
-	type: "shirt" | "pants" | "shoes" | "headwear"
-	imageUri: string
+	id?: number
+	type: string
+	imageUri: string | null
 	createdAt: number
 	updatedAt: number
 }
 export interface Tag {
-	id: number
+	id?: number
 	name: string
 }
 
@@ -30,7 +30,7 @@ async function getDb(): Promise<SQLiteDatabase> {
       PRAGMA foreign_keys = ON;
 
       CREATE TABLE IF NOT EXISTS clothingItems (
-        id TEXT PRIMARY KEY NOT NULL,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         type TEXT NOT NULL,
         imageUri TEXT NOT NULL,
         createdAt INTEGER NOT NULL,
@@ -63,21 +63,20 @@ async function getDb(): Promise<SQLiteDatabase> {
 export async function addClothingItem(item: ClothingItem) {
 	const database = await getDb()
 
-	try {
-		// Only five placeholders for five columns
-		const res = await database.runAsync(
-			`INSERT INTO clothingItems
-         (id, type, imageUri, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?);`,
-			item.id,
-			item.type,
-			item.imageUri,
-			item.createdAt,
-			item.updatedAt
-		)
-	} catch (e) {
-		console.error("Insert failed:", e)
+	const res = await database.runAsync(
+		`INSERT INTO clothingItems
+       (type, imageUri, createdAt, updatedAt)
+     VALUES ( ?, ?, ?, ?);`,
+		item.type,
+		item.imageUri,
+		item.createdAt,
+		item.updatedAt
+	)
+	console.log("res:", res.lastInsertRowId)
+	if (res.lastInsertRowId == null) {
+		throw new Error("Failed to insert clothing item")
 	}
+	return res.lastInsertRowId
 }
 
 // Fetch all items and parse their tags JSON back into string[]
@@ -86,13 +85,7 @@ export async function getAllClothingItems(): Promise<ClothingItem[]> {
 	const rows = await database.getAllAsync<ClothingRow>(
 		`SELECT * FROM clothingItems;`
 	)
-	return rows.map((r) => ({
-		id: r.id,
-		type: r.type as ClothingItem["type"],
-		imageUri: r.imageUri,
-		createdAt: r.createdAt,
-		updatedAt: r.updatedAt,
-	}))
+	return database.getAllAsync<ClothingItem>(`SELECT * FROM clothingItems;`)
 }
 
 // Delete an item by id
@@ -104,64 +97,60 @@ export async function deleteClothingItem(id: string) {
 // ---------------- TAGS CRUD -------------------
 
 // Add a new tag and return its id -> more so a helper function for the addItemTag function
-export async function addTag(name: string) { 
-  const database = await getDb()
-  await database.runAsync(
-    `INSERT OR IGNORE INTO tags (name) VALUES (?);`,
-    name
-  )
+export async function addTag(name: string) {
+	const database = await getDb()
+	await database.runAsync(`INSERT OR IGNORE INTO tags (name) VALUES (?);`, name)
 
-  const row = await database.getFirstAsync<{ id: number }>(
+	const row = await database.getFirstAsync<{ id: number }>(
 		`SELECT id FROM tags WHERE name = ?;`,
 		name
 	)
-  if (!row) throw new Error(`Failed to get tag id for "${name}"`)
+	if (!row) throw new Error(`Failed to get tag id for "${name}"`)
 	return row.id
 }
 
 // Get all tags
-export async function getAllTags(): Promise<Tag[]> { 
-  const database = await getDb()
-  return await database.getAllAsync<Tag>(`SELECT * FROM tags;`)
+export async function getAllTags(): Promise<Tag[]> {
+	const database = await getDb()
+	return await database.getAllAsync<Tag>(`SELECT * FROM tags;`)
 }
 
 // ---------------- ITEM TAGS CRUD -------------------
 
 // link a clothing item to a tag (use to add tags from frontend)
-export async function addItemTag(itemId: string, tagName: string) { 
-  const database = await getDb()
-  const tagId = await addTag(tagName)
-  await database.runAsync(
-    `INSERT OR IGNORE INTO itemTags (itemId, tagId) VALUES (?, ?);`,
-    itemId,
-    tagId
-  )
+export async function addItemTag(itemId: number, tagName: string) {
+	const database = await getDb()
+	const tagId = await addTag(tagName)
+	await database.runAsync(
+		`INSERT OR IGNORE INTO itemTags (itemId, tagId) VALUES (?, ?);`,
+		itemId,
+		tagId
+	)
 }
 
 // Return all tags for a given item
-export async function getTagsForItems(itemId: string): Promise<string[]> {
-  const database = await getDb()
-  const rows = await database.getAllAsync<{ name: string }>(
-    `SELECT t.name
+export async function getTagsForItems(itemId: number): Promise<string[]> {
+	const database = await getDb()
+	const rows = await database.getAllAsync<{ name: string }>(
+		`SELECT t.name
       FROM itemTags it
       JOIN tags t ON it.tagId = t.id
      WHERE it.itemId = ?;`,
-    itemId
-  )
-  return rows.map((r) => r.name)
+		itemId
+	)
+	return rows.map((r) => r.name)
 }
 
 // Return all items for a given tag
 export async function getItemsForTag(tagName: string): Promise<ClothingItem[]> {
-  const database = await getDb()
-  return database.getAllAsync<ClothingRow>(
-    `SELECT ci.*
+	const database = await getDb()
+	return database.getAllAsync<ClothingRow>(
+		`SELECT ci.*
       FROM itemTags it
       JOIN tags t ON it.tagId = t.id
       JOIN clothingItems ci ON it.itemId = ci.id
       WHERE t.name = ?;
     `,
-    tagName
-  )
+		tagName
+	)
 }
-
