@@ -2,6 +2,7 @@ export const Theme = {
 	base: {
 		darkA0: "#000000",
 		lightA0: "#ffffff",
+		lightFadedA0: "rgba(255,255,255,0.2)",
 	},
 	primary: {
 		a0: "#292929",

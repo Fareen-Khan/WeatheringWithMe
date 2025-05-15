@@ -41,7 +41,6 @@ export default function Outfits() {
 
   const testGetAll = async () => {
     const items = await getAllClothingItems();
-    console.log("All Outfits:", items);
   }
 
   const addClothingItemToDb = async () => {
