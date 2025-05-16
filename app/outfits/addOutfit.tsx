@@ -1,5 +1,5 @@
 import React, { useState, useEffect, use } from "react";
-import { ImageBackground, Button, Image, View, Text, TextInput, TouchableOpacity } from "react-native";
+import { ImageBackground, Button, Image, View, Text, TextInput, Pressable } from "react-native";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
 import * as ImagePicker from "expo-image-picker";
 import { Theme } from "@/styles/Colors";
@@ -72,7 +72,7 @@ export default function Outfits() {
           justifyContent: 'center',
           padding: 20,
         }}>
-          <TouchableOpacity
+          <Pressable
             onPress={pickImage}
             style={{
               width: "100%",
@@ -99,7 +99,7 @@ export default function Outfits() {
                 </View>
               )
             }
-          </TouchableOpacity>
+          </Pressable>
           {/* Type of clothing */}
 
           <Dropdown
@@ -125,7 +125,7 @@ export default function Outfits() {
             }}
           >
             {/* Cancel */}
-            <TouchableOpacity
+            <Pressable
               onPress={() => router.back()}
               style={{
                 flex: 1,
@@ -140,10 +140,10 @@ export default function Outfits() {
               <Text style={{ color: Theme.primary.a0, fontSize: 16, fontWeight: "600" }}>
                 Cancel
               </Text>
-            </TouchableOpacity>
+            </Pressable>
 
             {/* Add */}
-            <TouchableOpacity
+            <Pressable
               onPress={addClothingItemToDb}
               style={{
                 flex: 1,
@@ -157,7 +157,7 @@ export default function Outfits() {
               <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
                 Add
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 

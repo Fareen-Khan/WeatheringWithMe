@@ -1,6 +1,6 @@
 // components/FAB.tsx
 import React from "react"
-import { TouchableOpacity, StyleSheet } from "react-native"
+import { Pressable, StyleSheet } from "react-native"
 import Feather from "@expo/vector-icons/Feather"
 import { Theme } from "@/styles/Colors"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
@@ -33,7 +33,7 @@ export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
   }
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       style={[
         styles.fab,
@@ -43,11 +43,11 @@ export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
           height: size,
           borderRadius: size / 2,
           ...horizontalStyle,
-         },
+        },
       ]}
     >
       <Feather name="plus" size={24} color="#fff" />
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 
