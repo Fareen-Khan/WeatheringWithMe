@@ -89,7 +89,7 @@ export async function getAllClothingItems(): Promise<ClothingItem[]> {
 }
 
 // Delete an item by id
-export async function deleteClothingItem(id: string) {
+export async function deleteClothingItem(id: number) {
 	const database = await getDb()
 	await database.runAsync(`DELETE FROM clothingItems WHERE id = ?;`, id)
 }
