@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, Image, ActivityIndicator, ImageBackground, Pressable } from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
+import { Text, View, Image, ActivityIndicator, ImageBackground, Pressable, Modal, Button } from "react-native";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
 import CardList from "@/components/card-list";
 import { getCurrentWeather, get5DayForecast } from "@/api/weather";
-import { WeatherResponse, ForecastResponse } from "@/utils/types";
+import { WeatherResponse, ForecastResponse, ClothingItem, Tag, Outfit } from "@/utils/types";
 import { getRandomOutfit } from "@/api/outfit";
 import { BlurView } from 'expo-blur';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useFocusEffect } from "expo-router";
 import * as Location from "expo-location";
+import { WeatherSymbol } from "@/components/weatherSymbol";
+import { RecommendedOutfit } from "@/components/reccomendedOutfit";
+
+import { getAllClothingItems, getTagsForItems, deleteClothingItem, getAllTags, getItemsForTag } from "@/utils/db";
+import { Theme } from "@/styles/Colors";
 
 
 export default function Index() {
@@ -18,6 +23,10 @@ export default function Index() {
   const [forecast, setForecast] = useState<ForecastResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [outfit, setOutfit] = useState<string | null>(null);
+
+  const [userOutfit, setUserOutfit] = useState<Outfit | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
+
   // Extract location from search params and default to "Toronto" if not provided
   const { location } = useLocalSearchParams();
   // Default to Toronto if location is not provided and user not searching
@@ -65,14 +74,56 @@ export default function Index() {
     }
   };
 
+  function getSeasonByTemp(temp: number): "Winter" | "Fall" | "Spring" | "Summer" {
+    if (temp < 8) {
+      return "Winter"    // chilly, needs heavy layers
+    } else if (temp < 15) {
+      return "Fall"      // cool → light jacket or sweater
+    } else if (temp < 22) {
+      return "Spring"    // mild → long sleeves or light top
+    } else {
+      return "Summer"    // warm/hot → short sleeves
+    }
+  }
+
+
+  // pick random
+  function pickRandom<T>(arr: T[]): T | null {
+    if (arr.length === 0) return null;
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  // get an outfit (hat, shirt,pants, shoes) for the current season
+  async function getOutfit(temp: number) {
+    const currentTag = getSeasonByTemp(temp)
+    const items = await getItemsForTag(currentTag)
+
+    // get random outfit from the items
+    const shirt = pickRandom(items.filter(i => i.type === "Shirt"))
+    const pants = pickRandom(items.filter(i => i.type === "Pants"))
+    const shoes = pickRandom(items.filter(i => i.type === "Shoe"))
+    const headwear = pickRandom(items.filter(i => i.type === "Headwear"))
+    // console.log(currentTag)
+    // console.log("outfit: ", shirt, pants, shoes, headwear)
+    return { shirt, pants, shoes, headwear }
+  }
+
   useEffect(() => {
     if (location && typeof location === "string") {
-      console.log("Using searched location:", location);
+      // console.log("Using searched location:", location);
       fetchWeatherForCity(location);
     } else {
       fetchCurrentLocationAndWeather();
     }
   }, [city]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (data?.main) {
+        getOutfit(data.main.feels_like).then(setUserOutfit)
+      }
+    }, [data])
+  )
 
   if (loading) {
     return <ActivityIndicator size="large" color="blue" />;
@@ -122,28 +173,32 @@ export default function Index() {
             {/* Pill Box for extra info */}
             <BlurView style={styles.pillBox}>
               {/* Humidity */}
-              <View style={{ flexDirection: "row" }}>
-                <Feather name="droplet" size={20} color="white" />
-                <Text style={styles.detailsText}>{data.main.humidity}%</Text>
-              </View>
+              <WeatherSymbol
+                data={data.main.humidity}
+                symbol="droplet"
+                unit="%"
+              />
               {/* Wind */}
-              <View style={{ flexDirection: "row" }}>
-                <Feather name="wind" size={20} color="white" />
-                <Text style={styles.detailsText}>{data.wind?.speed != null ? Math.round(data.wind.speed) : "N/A"} m/s</Text>
-              </View>
+              <WeatherSymbol
+                data={data.wind?.speed ?? 0}
+                symbol="wind"
+                unit="m/s"
+              />
               {/* Snow (if present) */}
               {data.snow && (
-                <View style={{ flexDirection: "row" }}>
-                  <Feather name="cloud-snow" size={24} color="white" />
-                  <Text style={styles.detailsText}>{Math.round(data.snow["1h"] ?? 0)} cm</Text>
-                </View>
+                <WeatherSymbol
+                  data={Math.round(data.snow["1h"] ?? 0)}
+                  symbol="cloud-snow"
+                  unit="cm"
+                />
               )}
               {/* Rain (if present) */}
               {data.rain && (
-                <View style={{ flexDirection: "row" }}>
-                  <Feather name="cloud-rain" size={24} color="white" />
-                  <Text style={styles.detailsText}>{Math.round(data.rain["1h"] ?? 0)} mm</Text>
-                </View>
+                <WeatherSymbol
+                  data={Math.round(data.rain["1h"] ?? 0)}
+                  symbol="cloud-rain"
+                  unit="mm"
+                />
               )}
             </BlurView>
           </View>
@@ -159,6 +214,24 @@ export default function Index() {
           />
           {/* Should be at bottom of screen*/}
           <View style={{ paddingHorizontal: 10 }}>
+            <Pressable
+              onPress={()=> setIsVisible(true)}
+              style={{
+                marginTop: 16,
+                alignSelf: "center",
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+                backgroundColor: "#ddd",
+                borderRadius: 20,
+              }}
+            >
+              <Text style={[styles.detailsText, {color: Theme.base.darkFadedA0}]}>See suggested outfit</Text>
+            </Pressable>
+            <RecommendedOutfit
+              visible={isVisible}
+              outfit={userOutfit}
+              onClose={() => setIsVisible(false)}
+            />
             <CardList data={forecast} />
           </View>
         </SafeAreaView>

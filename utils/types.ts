@@ -116,3 +116,21 @@ export interface GeoResponse {
 	country: string
 	state: string
 }
+
+export interface ClothingItem {
+  id?: number
+  type: string
+  imageUri: string | null
+  createdAt: number
+  updatedAt: number
+}
+export interface Tag {
+  id?: number
+  name: string
+}
+export interface Outfit {
+	shirt: ClothingItem | null
+	pants: ClothingItem | null
+	shoes: ClothingItem | null
+	headwear: ClothingItem | null
+}

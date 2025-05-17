@@ -1,17 +1,6 @@
 import * as SQLite from "expo-sqlite"
 import type { SQLiteDatabase } from "expo-sqlite"
-
-export interface ClothingItem {
-	id?: number
-	type: string
-	imageUri: string | null
-	createdAt: number
-	updatedAt: number
-}
-export interface Tag {
-	id?: number
-	name: string
-}
+import { ClothingItem, Tag } from "@/utils/types"
 
 type ClothingRow = Omit<ClothingItem, "tags"> & { tags: string }
 

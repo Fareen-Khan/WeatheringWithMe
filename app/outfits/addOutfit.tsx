@@ -6,7 +6,7 @@ import { Theme } from "@/styles/Colors";
 import { Dropdown } from "@/components/dropdown";
 
 import { addClothingItem, deleteClothingItem, getAllClothingItems, addItemTag, getTagsForItems, getItemsForTag, getAllTags } from "@/utils/db";
-import { ClothingItem } from "@/utils/db";
+import { ClothingItem } from "@/utils/types";
 import { router } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 
@@ -20,11 +20,13 @@ export default function Outfits() {
     { label: "Pants", value: "Pants" },
     { label: "Headwear", value: "Headwear" },
   ]
+
+  // Each represnets a temp range
   const possibleTags = [
-    { label: "Warm", value: "Warm" },
-    { label: "Cool", value: "Cool" },
-    { label: "Cold", value: "Cold" },
-    { label: "Hot", value: "Hot" },
+    { label: "Summer", value: "Summer" }, // temp > 22
+    { label: "Winter", value: "Winter" }, // temp < 8
+    { label: "Spring", value: "Spring" }, // temp < 22
+    { label: "Fall", value: "Fall" }, //temp < 15
   ]
 
   // logic to open the image picker
