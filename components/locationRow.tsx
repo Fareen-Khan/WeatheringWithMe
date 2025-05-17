@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { GeoResponse } from "@/utils/types";
 import { Text, View, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView } from "react-native";
 import { router } from 'expo-router';
-import { useFavorites } from "@/utils/favorites";
+import { useFavorites } from "@/hooks/useFavorites";
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { Theme } from "@/styles/Colors"
 
