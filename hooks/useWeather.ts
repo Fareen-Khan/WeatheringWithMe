@@ -1,8 +1,7 @@
-import { getRandomOutfit } from "@/utils/outfit"
-import * as Location from "expo-location"
 import { get5DayForecast, getCurrentWeather } from "@/api/weather"
-import { WeatherResponse, ForecastResponse } from "@/utils/types"
-import { useEffect, useCallback, useState } from "react"
+import { ForecastResponse, WeatherResponse } from "@/utils/types"
+import * as Location from "expo-location"
+import { useCallback, useEffect, useState } from "react"
 
 export const useWeather = (initialCity: string) => {
 	const [city, setCity] = useState(initialCity)

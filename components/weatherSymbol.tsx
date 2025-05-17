@@ -1,7 +1,7 @@
-import React from "react";
-import { Text, View, Image, StyleSheet } from "react-native";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
 import { Feather } from "@expo/vector-icons";
+import React from "react";
+import { Text, View } from "react-native";
 
 type FeatherName = React.ComponentProps<typeof Feather>["name"];
 

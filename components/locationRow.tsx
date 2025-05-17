@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { GeoResponse } from "@/utils/types";
-import { Text, View, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView } from "react-native";
-import { router } from 'expo-router';
 import { useFavorites } from "@/hooks/useFavorites";
-import { Feather, AntDesign } from '@expo/vector-icons';
-import { Theme } from "@/styles/Colors"
+import { Theme } from "@/styles/Colors";
+import { GeoResponse } from "@/utils/types";
+import { AntDesign, Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 
 type LocationRowProps = {

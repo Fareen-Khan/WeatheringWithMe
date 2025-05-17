@@ -1,14 +1,14 @@
 import CardList from "@/components/cardList";
 import { RecommendedOutfit } from "@/components/reccomendedOutfit";
-import { WeatherSymbol } from "@/components/weatherSymbol";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
-import Feather from '@expo/vector-icons/Feather';
-import { BlurView } from 'expo-blur';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Image, ImageBackground, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { LocationHeader } from "@/components/locationHeader";
+import { PillItem, WeatherPillBox } from "@/components/weatherPillBox";
+import { WeatherSummary } from "@/components/weatherSummary";
 import { useOutfit } from "@/hooks/useOutfit";
 import { useWeather } from "@/hooks/useWeather";
 import { Theme } from "@/styles/Colors";
@@ -27,10 +27,14 @@ export default function Index() {
   const { data, forecast, loading, error, setCity, refetch, fetchCurrentLocationAndWeather } = useWeather(city)
   const { outfit, userOutfit, loading: outfitLoading, error: outfitError } = useOutfit(data?.main.feels_like ?? null)
   // setOutfit(getRandomOutfit(data?.main.feels_like ?? 0))
-
+  const pillItems: PillItem[] = [
+    { value: data?.main.humidity ?? 0, symbol: "droplet", unit: "%" },
+    { value: data?.wind?.speed ?? 0, symbol: "wind", unit: "m/s" },
+  ]
+  if (data?.snow) pillItems.push({ value: Math.round(data.snow["1h"]!), symbol: "cloud-snow", unit: "cm" })
+  if (data?.rain) pillItems.push({ value: Math.round(data.rain["1h"]!), symbol: "cloud-rain", unit: "mm" })
   useEffect(() => {
     if (location && typeof location === "string") {
-      // console.log("Using searched location:", location);
       refetch();
     } else {
       fetchCurrentLocationAndWeather();
@@ -59,63 +63,25 @@ export default function Index() {
           edges={["top", "bottom"]}
         >
           <View style={styles.weatherInfo}>
-            <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-              <Link href={"/(home)/search"}>
-                <Feather name="search" size={20} color="white" />
-                <Text style={styles.locationText}>
-                  {data.name}, {data.sys.country}
-                </Text>
-              </Link>
-              <Pressable onPress={() => {
-                fetchCurrentLocationAndWeather()
-              }}>
-                <Feather name="map-pin" size={20} color="white" />
-              </Pressable>
-            </View>
-            <Image
-              source={{
-                uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
-              }}
-              style={styles.icon}
+            <LocationHeader
+              city={data.name}
+              country={data.sys.country}
+              onRefresh={fetchCurrentLocationAndWeather}
+              searchRef={city}
             />
-            <Text style={styles.tempText}>{Math.round(data.main.feels_like)}°C</Text>
-            <Text style={styles.detailsText}>
-              Actual: {Math.round(data.main.temp)}°C
-            </Text>
+            <WeatherSummary
+              feelsLike={data.main.feels_like}
+              temp={data.main.temp}
+              icon={data.weather[0].icon}
+              unit="°C"
+            />
             {/* Pill Box for extra info */}
-            <BlurView style={styles.pillBox}>
-              {/* Humidity */}
-              <WeatherSymbol
-                data={data.main.humidity}
-                symbol="droplet"
-                unit="%"
-              />
-              {/* Wind */}
-              <WeatherSymbol
-                data={data.wind?.speed ?? 0}
-                symbol="wind"
-                unit="m/s"
-              />
-              {/* Snow (if present) */}
-              {data.snow && (
-                <WeatherSymbol
-                  data={Math.round(data.snow["1h"] ?? 0)}
-                  symbol="cloud-snow"
-                  unit="cm"
-                />
-              )}
-              {/* Rain (if present) */}
-              {data.rain && (
-                <WeatherSymbol
-                  data={Math.round(data.rain["1h"] ?? 0)}
-                  symbol="cloud-rain"
-                  unit="mm"
-                />
-              )}
-            </BlurView>
+            
+            <WeatherPillBox
+              items={pillItems}
+            />
           </View>
           {/* ootd */}
-          {/* TODO: add fallback image */}
           <Image
             source={outfit != null ? outfit : require("@/assets/images/outfits/1-2.png")}
             style={{

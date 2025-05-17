@@ -92,7 +92,8 @@ export const weatherStyles = StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingVertical: 5,
 		elevation: 2,
-		overflow: "hidden",
+    overflow: "hidden",
+    marginBottom: 10,
 	},
 
 	cardContainer: {

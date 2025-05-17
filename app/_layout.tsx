@@ -1,6 +1,6 @@
-import { Stack, Tabs } from "expo-router";
-import Feather from '@expo/vector-icons/Feather';
 import { Theme } from "@/styles/Colors";
+import Feather from '@expo/vector-icons/Feather';
+import { Tabs } from "expo-router";
 
 export default function RootLayout() {
   return (

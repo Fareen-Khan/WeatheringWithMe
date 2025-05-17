@@ -1,14 +1,14 @@
-import React, { useState, useEffect, use } from "react";
-import { ImageBackground, Button, Image, View, Text, TextInput, Pressable } from "react-native";
+import { Dropdown } from "@/components/dropdown";
+import { Theme } from "@/styles/Colors";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
 import * as ImagePicker from "expo-image-picker";
-import { Theme } from "@/styles/Colors";
-import { Dropdown } from "@/components/dropdown";
+import React, { useState } from "react";
+import { Image, ImageBackground, Pressable, Text, View } from "react-native";
 
-import { addClothingItem, deleteClothingItem, getAllClothingItems, addItemTag, getTagsForItems, getItemsForTag, getAllTags } from "@/utils/db";
+import { addClothingItem, addItemTag } from "@/utils/db";
 import { ClothingItem } from "@/utils/types";
-import { router } from "expo-router";
 import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 export default function Outfits() {
   const [image, setImage] = useState<string | null>(null);

@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from "react";
-import { ImageBackground, Image, View, ScrollView, Pressable, Text, Alert } from "react-native";
-import { weatherStyles as styles } from "@/styles/weatherStyles";
-import { useFocusEffect, useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "@/components/FAB";
+import { weatherStyles as styles } from "@/styles/weatherStyles";
 import { Feather } from "@expo/vector-icons";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useCallback, useState } from "react";
+import { Alert, Image, ImageBackground, Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
-import { getAllClothingItems, getTagsForItems, deleteClothingItem } from "@/utils/db";
-import { ClothingItem } from "@/utils/db";
+import { deleteClothingItem, getAllClothingItems, getTagsForItems } from "@/utils/db";
+import { ClothingItem } from "@/utils/types";
 
 export default function Outfits() {
   const [allClothingItems, setAllClothingItems] = useState<ClothingItem[]>([]);

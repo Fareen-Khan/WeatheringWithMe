@@ -1,4 +1,3 @@
-// components/FAB.tsx
 import React from "react"
 import { Pressable, StyleSheet } from "react-native"
 import Feather from "@expo/vector-icons/Feather"
