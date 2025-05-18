@@ -6,17 +6,17 @@ export default function RootLayout() {
   return (
     <Tabs
       screenOptions={{
-      headerShown: false,
-      tabBarActiveTintColor: Theme.base.lightA0,
+        headerShown: false,
+        tabBarActiveTintColor: Theme.base.lightA0,
         tabBarInactiveTintColor: "rgba(255,255,255,0.5)",
-      tabBarStyle: {
-        backgroundColor: "transparent",
-        borderTopWidth: 0,      
-        elevation: 0,          
-        position: "absolute",
+        tabBarStyle: {
+          backgroundColor: "transparent",
+          borderTopWidth: 0,
+          elevation: 0,
+          position: "absolute",
         },
-    }}
-    
+      }}
+
     >
       <Tabs.Screen name="(home)" options={{
         tabBarIcon: ({ color }) => <Feather name="home" size={20} color={color} />,
