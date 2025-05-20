@@ -9,13 +9,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { deleteClothingItem, getAllClothingItems, getTagsForItems } from "@/utils/db";
 import { ClothingItem } from "@/utils/types";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 export default function Outfits() {
   const [allClothingItems, setAllClothingItems] = useState<ClothingItem[]>([]);
   const [tagsMap, setTagsMap] = useState<Record<number, string>>({});
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null)
-  
-  
+  const tabBarHeight = useBottomTabBarHeight();
+
+
   const router = useRouter();
 
   async function loadAll() {
@@ -59,94 +61,94 @@ export default function Outfits() {
   );
 
   return (
+    <ImageBackground
+      source={require("@/assets/images/night_time.png")}
+      style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
+      resizeMode="cover"
+    >
     <View style={[styles.container, { backgroundColor: "transparent" }]}>
-      <ImageBackground
-        source={require("@/assets/images/night_time.png")}
-        style={[styles.bgImage, { flex: 1 }]}
-        resizeMode="cover"
-      >
-        <SafeAreaView style={{
-          flex: 10,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-          edges={["top", "bottom"]}>
+      <SafeAreaView style={{
+        flex: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+        edges={["top", "bottom"]}>
 
-          <ScrollView
-            style={{ flex: 1 }}
-            contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between" }}
-          >
-            {
-              allClothingItems.map((item) => (
-                <View key={item.id} style={{
-                  width: "48%",
-                  aspectRatio: 1,
-                  marginBottom: 20,
-                  borderRadius: 10,
-                  overflow: "hidden",
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between" }}
+        >
+          {
+            allClothingItems.map((item) => (
+              <View key={item.id} style={{
+                width: "48%",
+                aspectRatio: 1,
+                marginBottom: 20,
+                borderRadius: 10,
+                overflow: "hidden",
 
-                }}>
-                  <Image
-                    source={{ uri: item.imageUri ?? "https://picsum.photos/200/300" }}
-                    style={{ width: "100%", height: "100%", resizeMode: "cover" }}
-                  />
-                  <Pressable
-                    onPress={() => {
-                      setMenuOpenId((prev) =>
-                        prev === item.id ? null : item.id!
-                      )
-                    }}
+              }}>
+                <Image
+                  source={{ uri: item.imageUri ?? "https://picsum.photos/200/300" }}
+                  style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+                />
+                <Pressable
+                  onPress={() => {
+                    setMenuOpenId((prev) =>
+                      prev === item.id ? null : item.id!
+                    )
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    borderRadius: 12,
+                    padding: 4,
+                  }}
+                >
+                  <Feather name="more-horizontal" size={24} color="white" />
+                </Pressable>
+                {menuOpenId === item.id && (
+                  <View
                     style={{
                       position: "absolute",
-                      top: 8,
+                      top: 36,
                       right: 8,
-                      backgroundColor: "rgba(0,0,0,0.6)",
-                      borderRadius: 12,
-                      padding: 4,
+                      backgroundColor: "#fff",
+                      borderRadius: 6,
+                      elevation: 4,
+                      shadowColor: "#000",
+                      shadowOpacity: 0.2,
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowRadius: 2,
                     }}
                   >
-                    <Feather name="more-horizontal" size={24} color="white" />
-                  </Pressable>
-                  {menuOpenId === item.id && (
-                    <View
+                    <Pressable
+                      onPress={() => handleDelete(item.id!)}
                       style={{
-                        position: "absolute",
-                        top: 36,
-                        right: 8,
-                        backgroundColor: "#fff",
-                        borderRadius: 6,
-                        elevation: 4,
-                        shadowColor: "#000",
-                        shadowOpacity: 0.2,
-                        shadowOffset: { width: 0, height: 1 },
-                        shadowRadius: 2,
+                        paddingVertical: 8,
+                        paddingHorizontal: 12,
                       }}
                     >
-                      <Pressable
-                        onPress={() => handleDelete(item.id!)}
-                        style={{
-                          paddingVertical: 8,
-                          paddingHorizontal: 12,
-                        }}
-                      >
-                        <Text style={{ color: "red", fontWeight: "500" }}>
-                          Delete
-                        </Text>
-                      </Pressable>
-                    </View>
-                  )}
-                </View>
-              ))
-            }
-          </ScrollView>
+                      <Text style={{ color: "red", fontWeight: "500" }}>
+                        Delete
+                      </Text>
+                    </Pressable>
+                  </View>
+                )}
+              </View>
+            ))
+          }
+        </ScrollView>
 
-        </SafeAreaView>
+      </SafeAreaView>
 
-        <FAB onPress={() => router.push("/outfits/addOutfit")} position="center" />
+      <FAB onPress={() => router.push("/outfits/addOutfit")} position="center" />
 
-      </ImageBackground>
 
-    </View>
+      </View>
+    </ImageBackground>
 
   );
 }

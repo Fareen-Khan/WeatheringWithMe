@@ -8,12 +8,15 @@ import { Image, ImageBackground, Pressable, Text, View } from "react-native";
 import { addClothingItem, addItemTag } from "@/utils/db";
 import { ClothingItem } from "@/utils/types";
 import { Feather } from "@expo/vector-icons";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { router } from "expo-router";
 
 export default function Outfits() {
   const [image, setImage] = useState<string | null>(null);
   const [clothingType, setClothingType] = useState<string[]>([])
   const [tags, setTags] = useState<string[]>([])
+  const tabBarHeight = useBottomTabBarHeight();
+
   const possibleClothingTypes = [
     { label: "Shirt", value: "Shirt" },
     { label: "Shoe", value: "Shoe" },
@@ -62,12 +65,12 @@ export default function Outfits() {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: "transparent" }]} >
-      <ImageBackground
-        source={require("@/assets/images/night_time.png")}
-        style={[styles.bgImage, { flex: 1 }]}
-        resizeMode="cover"
-      >
+    <ImageBackground
+      source={require("@/assets/images/night_time.png")}
+      style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
+      resizeMode="cover"
+    >
+      <View style={[styles.container, { backgroundColor: "transparent" }]} >
         <View style={{
           flex: 1,
           alignItems: 'center',
@@ -164,9 +167,8 @@ export default function Outfits() {
         </View>
 
 
-      </ImageBackground>
 
-    </View>
-
+      </View>
+    </ImageBackground>
   );
 }

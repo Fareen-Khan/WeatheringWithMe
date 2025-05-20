@@ -12,10 +12,13 @@ import { WeatherSummary } from "@/components/weatherSummary";
 import { useOutfit } from "@/hooks/useOutfit";
 import { useWeather } from "@/hooks/useWeather";
 import { Theme } from "@/styles/Colors";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+
 
 
 export default function Index() {
   const [isVisible, setIsVisible] = useState(false)
+  const tabBarHeight = useBottomTabBarHeight();
 
   // TODO: move functions to a hooks folder
 
@@ -51,12 +54,13 @@ export default function Index() {
 
   // ---- VIEW ----
   return (
-    <View style={[styles.container, { backgroundColor: "transparent" }]} >
-      <ImageBackground
-        source={require("@/assets/images/night_time.png")}
-        style={[styles.bgImage, { flex: 1 }]}
-        resizeMode="cover"
-      >
+    <ImageBackground
+      source={require("@/assets/images/night_time.png")}
+      style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
+      resizeMode="cover"
+    >
+      <View style={[styles.container]} >
+
         {/* Top Section */}
         <SafeAreaView
           style={[styles.subContainer, styles.topContainer, { flex: 1, justifyContent: "space-between" }]}
@@ -76,7 +80,7 @@ export default function Index() {
               unit="°C"
             />
             {/* Pill Box for extra info */}
-            
+
             <WeatherPillBox
               items={pillItems}
             />
@@ -114,9 +118,10 @@ export default function Index() {
           </View>
         </SafeAreaView>
         <SafeAreaView style={{ opacity: 0 }} />
-      </ImageBackground>
+        {/* </ImageBackground> */}
 
-    </View>
+      </View>
+    </ImageBackground>
 
   );
 }

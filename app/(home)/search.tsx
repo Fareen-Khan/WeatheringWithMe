@@ -7,10 +7,13 @@ import { getListofCities } from "@/api/weather";
 import { GeoResponse } from "@/utils/types";
 import { Theme } from "@/styles/Colors"
 import { LocationRow } from "@/components/locationRow";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 export default function Search() {
   const [location, setLocation] = useState("");
   const [locationResults, setLocationResults] = useState<GeoResponse[] | { cod: number; message: string }>([]);
+  const tabBarHeight = useBottomTabBarHeight();
+
 
   useEffect(() => {
     if (location.trim() === "") {
@@ -30,9 +33,8 @@ export default function Search() {
   return (
     <ImageBackground
       source={require("@/assets/images/night_time.png")}
-      style={styles.bgImage}
+      style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
       resizeMode="cover"
-      blurRadius={10}
     >
       <SafeAreaView style={{ flex: 1 }}>
         <View style={[styles.container]}>
