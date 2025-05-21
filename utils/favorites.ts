@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useEffect, useState } from "react"
 
 const FAVORITES_KEY = "favoriteLocations"
 
 // Save a new favorite location
-export const saveFavoriteLocation = async (location: string) => {
+const saveFavoriteLocation = async (location: string) => {
 	try {
 		const storedFavorites = await AsyncStorage.getItem(FAVORITES_KEY)
 		const favorites = storedFavorites ? JSON.parse(storedFavorites) : []
@@ -19,7 +20,7 @@ export const saveFavoriteLocation = async (location: string) => {
 }
 
 // Retrieve favorite locations
-export const getFavoriteLocations = async (): Promise<string[]> => {
+const getFavoriteLocations = async (): Promise<string[]> => {
 	try {
 		const storedFavorites = await AsyncStorage.getItem(FAVORITES_KEY)
 		return storedFavorites ? JSON.parse(storedFavorites) : []
@@ -30,7 +31,7 @@ export const getFavoriteLocations = async (): Promise<string[]> => {
 }
 
 // Remove a favorite location
-export const removeFavoriteLocation = async (location: string) => {
+const removeFavoriteLocation = async (location: string) => {
 	try {
 		const storedFavorites = await AsyncStorage.getItem(FAVORITES_KEY)
 		let favorites = storedFavorites ? JSON.parse(storedFavorites) : []
@@ -42,5 +43,27 @@ export const removeFavoriteLocation = async (location: string) => {
 	}
 }
 
+export const useFavorites = () => {
+	const [favorites, setFavorites] = useState<string[]>([])
 
+	const loadFavorites = async () => {
+		const favs = await getFavoriteLocations()
+		setFavorites(favs)
+	}
 
+	const addFavorite = async (favoriteLocation: string) => {
+		await saveFavoriteLocation(favoriteLocation)
+		await loadFavorites()
+	}
+
+	const removeFavorite = async (favoriteLocation: string) => {
+		await removeFavoriteLocation(favoriteLocation)
+		await loadFavorites()
+	}
+
+	useEffect(() => {
+		loadFavorites()
+	}, [])
+
+	return { favorites, addFavorite, removeFavorite }
+}

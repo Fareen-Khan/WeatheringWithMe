@@ -1,5 +1,5 @@
-import { useFavorites } from "@/hooks/useFavorites";
 import { Theme } from "@/styles/Colors";
+import { useFavorites } from "@/utils/favorites";
 import { GeoResponse } from "@/utils/types";
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -68,7 +68,7 @@ const searchResults = ({ data }: { data: GeoResponse[] }) => {
   )
 }
 
-const favoritesResults = ({ favorites }: {favorites:string[]}) => {
+const favoritesResults = ({ favorites }: { favorites: string[] }) => {
   const { removeFavorite } = useFavorites();
   return (
     <>
