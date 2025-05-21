@@ -35,6 +35,7 @@ export default function Search() {
       source={require("@/assets/images/night_time.png")}
       style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
       resizeMode="cover"
+      blurRadius={10}
     >
       <SafeAreaView style={{ flex: 1 }}>
         <View style={[styles.container]}>

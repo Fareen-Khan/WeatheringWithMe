@@ -1,8 +1,6 @@
+import Feather from "@expo/vector-icons/Feather"
 import React from "react"
 import { Pressable, StyleSheet } from "react-native"
-import Feather from "@expo/vector-icons/Feather"
-import { Theme } from "@/styles/Colors"
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 
 type FABPosition = "left" | "center" | "right"
 
@@ -13,7 +11,6 @@ interface FABProps {
 }
 
 export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
-  const tabBarHeight = useBottomTabBarHeight()
   // Decide the horizontal style
   let horizontalStyle: any
   switch (position) {
@@ -22,8 +19,8 @@ export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
       break
     case "center":
       horizontalStyle = {
-        left: "50%",        // move to center of parent
-        marginLeft: -28,    // pull back half the FAB width (56/2)
+        left: "50%",
+        marginLeft: -size / 2,
       }
       break
     case "right":
@@ -37,7 +34,7 @@ export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
       style={[
         styles.fab,
         {
-          bottom: tabBarHeight,
+          bottom: 4,
           width: size,
           height: size,
           borderRadius: size / 2,
@@ -53,8 +50,17 @@ export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
 const styles = StyleSheet.create({
   fab: {
     position: "absolute",
-    backgroundColor: Theme.base.lightFadedA0,
+    backgroundColor: "rgb(237, 117, 47)",
     alignItems: "center",
     justifyContent: "center",
+
+    // Android shadow:
+    elevation: 6,
+
+    // iOS shadow:
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
   },
 })

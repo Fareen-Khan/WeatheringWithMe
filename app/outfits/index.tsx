@@ -66,85 +66,96 @@ export default function Outfits() {
       style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
       resizeMode="cover"
     >
-    <View style={[styles.container, { backgroundColor: "transparent" }]}>
-      <SafeAreaView style={{
-        flex: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-        edges={["top", "bottom"]}>
+      <View style={[styles.container, { backgroundColor: "transparent" }]}>
+        <SafeAreaView style={{
+          flex: 10,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+          edges={["top"]}>
 
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between" }}
-        >
-          {
-            allClothingItems.map((item) => (
-              <View key={item.id} style={{
-                width: "48%",
-                aspectRatio: 1,
-                marginBottom: 20,
-                borderRadius: 10,
-                overflow: "hidden",
+          <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={{
+              flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between",
 
-              }}>
-                <Image
-                  source={{ uri: item.imageUri ?? "https://picsum.photos/200/300" }}
-                  style={{ width: "100%", height: "100%", resizeMode: "cover" }}
-                />
-                <Pressable
-                  onPress={() => {
-                    setMenuOpenId((prev) =>
-                      prev === item.id ? null : item.id!
-                    )
-                  }}
+              // iOS shadow:
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 0 },  
+              shadowOpacity: 0.5,
+              shadowRadius: 6,
+            }}
+          >
+            {
+              allClothingItems.map((item) => (
+                <View
+                  key={item.id}
                   style={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    backgroundColor: "rgba(0,0,0,0.6)",
-                    borderRadius: 12,
-                    padding: 4,
-                  }}
-                >
-                  <Feather name="more-horizontal" size={24} color="white" />
-                </Pressable>
-                {menuOpenId === item.id && (
-                  <View
+                    width: "48%",
+                    aspectRatio: 1,
+                    marginBottom: 20,
+                    borderRadius: 10,
+                    overflow: "hidden",
+                    // Android shadow:
+                    elevation: 10,
+                  }}>
+                  <Image
+                    source={{ uri: item.imageUri ?? "https://picsum.photos/200/300" }}
+                    style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+                  />
+                  <Pressable
+                    onPress={() => {
+                      setMenuOpenId((prev) =>
+                        prev === item.id ? null : item.id!
+                      )
+                    }}
                     style={{
                       position: "absolute",
-                      top: 36,
+                      top: 8,
                       right: 8,
-                      backgroundColor: "#fff",
-                      borderRadius: 6,
-                      elevation: 4,
-                      shadowColor: "#000",
-                      shadowOpacity: 0.2,
-                      shadowOffset: { width: 0, height: 1 },
-                      shadowRadius: 2,
+                      backgroundColor: "rgba(0,0,0,0.6)",
+                      borderRadius: 12,
+                      padding: 4,
                     }}
                   >
-                    <Pressable
-                      onPress={() => handleDelete(item.id!)}
+                    <Feather name="more-horizontal" size={24} color="white" />
+                  </Pressable>
+                  {menuOpenId === item.id && (
+                    <View
                       style={{
-                        paddingVertical: 8,
-                        paddingHorizontal: 12,
+                        position: "absolute",
+                        top: 36,
+                        right: 8,
+                        backgroundColor: "#fff",
+                        borderRadius: 6,
+                        elevation: 4,
+                        shadowColor: "#000",
+                        shadowOpacity: 0.2,
+                        shadowOffset: { width: 0, height: 1 },
+                        shadowRadius: 2,
                       }}
                     >
-                      <Text style={{ color: "red", fontWeight: "500" }}>
-                        Delete
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-              </View>
-            ))
-          }
-        </ScrollView>
+                      <Pressable
+                        onPress={() => handleDelete(item.id!)}
+                        style={{
+                          paddingVertical: 8,
+                          paddingHorizontal: 12,
+                        }}
+                      >
+                        <Text style={{ color: "red", fontWeight: "500" }}>
+                          Delete
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                </View>
+              ))
+            }
+          </ScrollView>
 
-      </SafeAreaView>
+        </SafeAreaView>
 
-      <FAB onPress={() => router.push("/outfits/addOutfit")} position="center" />
+        <FAB onPress={() => router.push("/outfits/addOutfit")} position="center" size={64} />
 
 
       </View>
