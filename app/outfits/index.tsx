@@ -63,102 +63,100 @@ export default function Outfits() {
   return (
     <ImageBackground
       source={require("@/assets/images/night_time.png")}
-      style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
+      style={styles.bgImage}
       resizeMode="cover"
     >
-      <View style={[styles.container, { backgroundColor: "transparent" }]}>
-        <SafeAreaView style={{
-          flex: 10,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-          edges={["top"]}>
+      <SafeAreaView style={{
+        flex: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+        edges={["top"]}>
 
-          <ScrollView
-            style={{ flex: 1 }}
-            contentContainerStyle={{
-              flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between",
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between",
 
-              // iOS shadow:
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 0 },  
-              shadowOpacity: 0.5,
-              shadowRadius: 6,
-            }}
-          >
-            {
-              allClothingItems.map((item) => (
-                <View
-                  key={item.id}
+            // iOS shadow:
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.5,
+            shadowRadius: 6,
+          }}
+        >
+          {
+            allClothingItems.map((item) => (
+              <View
+                key={item.id}
+                style={{
+                  width: "48%",
+                  aspectRatio: 1,
+                  marginBottom: 20,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  // Android shadow:
+                  elevation: 10,
+                }}>
+                <Image
+                  source={{ uri: item.imageUri ?? "https://picsum.photos/200/300" }}
+                  style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+                />
+                <Pressable
+                  onPress={() => {
+                    setMenuOpenId((prev) =>
+                      prev === item.id ? null : item.id!
+                    )
+                  }}
                   style={{
-                    width: "48%",
-                    aspectRatio: 1,
-                    marginBottom: 20,
-                    borderRadius: 10,
-                    overflow: "hidden",
-                    // Android shadow:
-                    elevation: 10,
-                  }}>
-                  <Image
-                    source={{ uri: item.imageUri ?? "https://picsum.photos/200/300" }}
-                    style={{ width: "100%", height: "100%", resizeMode: "cover" }}
-                  />
-                  <Pressable
-                    onPress={() => {
-                      setMenuOpenId((prev) =>
-                        prev === item.id ? null : item.id!
-                      )
-                    }}
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    borderRadius: 12,
+                    padding: 4,
+                  }}
+                >
+                  <Feather name="more-horizontal" size={24} color="white" />
+                </Pressable>
+                {menuOpenId === item.id && (
+                  <View
                     style={{
                       position: "absolute",
-                      top: 8,
+                      top: 36,
                       right: 8,
-                      backgroundColor: "rgba(0,0,0,0.6)",
-                      borderRadius: 12,
-                      padding: 4,
+                      backgroundColor: "#fff",
+                      borderRadius: 6,
+                      elevation: 4,
+                      shadowColor: "#000",
+                      shadowOpacity: 0.2,
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowRadius: 2,
                     }}
                   >
-                    <Feather name="more-horizontal" size={24} color="white" />
-                  </Pressable>
-                  {menuOpenId === item.id && (
-                    <View
+                    <Pressable
+                      onPress={() => handleDelete(item.id!)}
                       style={{
-                        position: "absolute",
-                        top: 36,
-                        right: 8,
-                        backgroundColor: "#fff",
-                        borderRadius: 6,
-                        elevation: 4,
-                        shadowColor: "#000",
-                        shadowOpacity: 0.2,
-                        shadowOffset: { width: 0, height: 1 },
-                        shadowRadius: 2,
+                        paddingVertical: 8,
+                        paddingHorizontal: 12,
                       }}
                     >
-                      <Pressable
-                        onPress={() => handleDelete(item.id!)}
-                        style={{
-                          paddingVertical: 8,
-                          paddingHorizontal: 12,
-                        }}
-                      >
-                        <Text style={{ color: "red", fontWeight: "500" }}>
-                          Delete
-                        </Text>
-                      </Pressable>
-                    </View>
-                  )}
-                </View>
-              ))
-            }
-          </ScrollView>
+                      <Text style={{ color: "red", fontWeight: "500" }}>
+                        Delete
+                      </Text>
+                    </Pressable>
+                  </View>
+                )}
+              </View>
+            ))
+          }
+        </ScrollView>
 
-        </SafeAreaView>
+      </SafeAreaView>
 
-        <FAB onPress={() => router.push("/outfits/addOutfit")} position="center" size={64} />
+      <FAB onPress={() => router.push("/outfits/addOutfit")} position="center" size={64} />
 
 
-      </View>
     </ImageBackground>
 
   );

@@ -10,10 +10,10 @@ export default function RootLayout() {
         tabBarActiveTintColor: Theme.base.lightA0,
         tabBarInactiveTintColor: "rgba(255,255,255,0.5)",
         tabBarStyle: {
-          backgroundColor: "transparent",
+          backgroundColor: "#000",
           borderTopWidth: 0,
           elevation: 0,
-          position: "absolute",
+          // position: "absolute",
         },
       }}
 

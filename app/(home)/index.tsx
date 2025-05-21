@@ -56,71 +56,61 @@ export default function Index() {
   return (
     <ImageBackground
       source={require("@/assets/images/night_time.png")}
-      style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
+      style={[styles.bgImage]}
       resizeMode="cover"
     >
-      <View style={[styles.container]} >
+      <SafeAreaView
+        style={{ justifyContent: "space-between", alignItems: "center", flex: 1 }}
+        edges={["top"]}
+      >
+        <View style={{ alignItems: "center" }}>
+          <LocationHeader
+            city={data.name}
+            country={data.sys.country}
+            onRefresh={fetchCurrentLocationAndWeather}
+            searchRef={city}
+          />
+          <WeatherSummary
+            feelsLike={data.main.feels_like}
+            temp={data.main.temp}
+            icon={data.weather[0].icon}
+            unit="°C"
+          />
+          <WeatherPillBox
+            items={pillItems}
+          />
+        </View>
 
-        {/* Top Section */}
-        <SafeAreaView
-          style={[styles.subContainer, styles.topContainer, { flex: 1, justifyContent: "space-between" }]}
-          edges={["top", "bottom"]}
-        >
-          <View style={styles.weatherInfo}>
-            <LocationHeader
-              city={data.name}
-              country={data.sys.country}
-              onRefresh={fetchCurrentLocationAndWeather}
-              searchRef={city}
-            />
-            <WeatherSummary
-              feelsLike={data.main.feels_like}
-              temp={data.main.temp}
-              icon={data.weather[0].icon}
-              unit="°C"
-            />
-            {/* Pill Box for extra info */}
-
-            <WeatherPillBox
-              items={pillItems}
-            />
-          </View>
-          {/* ootd */}
+        <View style= {{flex:1}}> 
           <Image
             source={outfit != null ? outfit : require("@/assets/images/outfits/1-2.png")}
-            style={{
-              // flex: 1,
-              height: "45%",
-              resizeMode: "contain",
-            }}
+            style={{ height: "100%", resizeMode: "contain" }}
           />
-          {/* Should be at bottom of screen*/}
-          <View style={{ paddingHorizontal: 10 }}>
-            <Pressable
-              onPress={() => setIsVisible(true)}
-              style={{
-                marginTop: 16,
-                alignSelf: "center",
-                paddingHorizontal: 24,
-                paddingVertical: 12,
-                backgroundColor: "#ddd",
-                borderRadius: 20,
-              }}
-            >
-              <Text style={[styles.detailsText, { color: Theme.base.darkFadedA0 }]}>See suggested outfit</Text>
-            </Pressable>
-            <RecommendedOutfit
-              visible={isVisible}
-              outfit={userOutfit}
-              onClose={() => setIsVisible(false)}
-            />
-            <CardList data={forecast} />
-          </View>
-        </SafeAreaView>
-        <SafeAreaView style={{ opacity: 0 }} />
-        {/* </ImageBackground> */}
+        </View>
 
-      </View>
+        <View>
+          <Pressable
+            onPress={() => setIsVisible(true)}
+            style={{
+              marginTop: 16,
+              alignSelf: "center",
+              paddingHorizontal: 24,
+              paddingVertical: 12,
+              backgroundColor: "#ddd",
+              borderRadius: 20,
+            }}
+          >
+            <Text style={[styles.detailsText, { color: Theme.base.darkFadedA0 }]}>See suggested outfit</Text>
+          </Pressable>
+          <RecommendedOutfit
+            visible={isVisible}
+            outfit={userOutfit}
+            onClose={() => setIsVisible(false)}
+          />
+          <CardList data={forecast} />
+        </View>
+        
+      </SafeAreaView>
     </ImageBackground>
 
   );
