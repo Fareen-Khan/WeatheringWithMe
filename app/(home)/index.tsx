@@ -68,11 +68,11 @@ export default function Index() {
               alignSelf: "center",
               paddingHorizontal: 24,
               paddingVertical: 12,
-              backgroundColor: "#ddd",
+              backgroundColor: Theme.colors.lighterGray,
               borderRadius: 20,
             }}
           >
-            <Text style={[styles.detailsText, { color: Theme.base.darkFadedA0 }]}>See suggested outfit</Text>
+            <Text style={[styles.detailsText, { color: Theme.colors.black }]}>See suggested outfit</Text>
           </Pressable>
           <RecommendedOutfit
             visible={isVisible}

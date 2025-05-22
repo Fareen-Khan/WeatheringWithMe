@@ -1,3 +1,4 @@
+import { Theme } from "@/styles/Colors";
 import { weatherStyles as styles } from "@/styles/weatherStyles";
 import { Feather } from "@expo/vector-icons";
 import { Link } from "expo-router";
@@ -15,7 +16,7 @@ export function LocationHeader({ city, country, onRefresh, searchRef }: Location
   return (
     <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
       <Link href={"/(home)/search"}>
-        <Feather name="search" size={20} color="white" />
+        <Feather name="search" size={20} color={Theme.colors.white} />
         <Text style={styles.locationText}>
           {city}, {country}
         </Text>
@@ -23,7 +24,7 @@ export function LocationHeader({ city, country, onRefresh, searchRef }: Location
       <Pressable onPress={() => {
         onRefresh()
       }}>
-        <Feather name="map-pin" size={20} color="white" />
+        <Feather name="map-pin" size={20} color={Theme.colors.white} />
       </Pressable>
     </View>
   );

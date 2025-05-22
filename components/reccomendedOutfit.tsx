@@ -8,6 +8,8 @@ import {
   ScrollView,
 } from "react-native"
 import { Outfit } from "@/utils/types"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { Theme } from "@/styles/Colors"
 
 interface RecommendedOutfitProps {
   visible: boolean
@@ -22,17 +24,18 @@ export function RecommendedOutfit({
 }: RecommendedOutfitProps) {
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      <View
+      <SafeAreaView
         style={{
           position: "absolute",
           bottom: 0,
           left: 0,
           right: 0,
-          backgroundColor: "#fff",
+          backgroundColor: Theme.colors.modalBackgroundDark, 
           borderTopLeftRadius: 16,
           borderTopRightRadius: 16,
           padding: 16,
         }}
+        edges={["bottom"]}
       >
         <Text
           style={{
@@ -79,15 +82,15 @@ export function RecommendedOutfit({
                         height: 100,
                         textAlign: "center",
                         textAlignVertical: "center",
-                        backgroundColor: "#eee",
+                        backgroundColor: Theme.colors.lightGray,
                         borderRadius: 8,
-                        color: "#999",
+                        color: Theme.colors.black70,
                       }}
                     >
                       No {slot} yet
                     </Text>
                   )}
-                  <Text style={{ marginTop: 4, fontSize: 14 }}>
+                  <Text style={{ marginTop: 4, fontSize: 14, color: Theme.colors.lightGray}}>
                     {slot.charAt(0).toUpperCase() + slot.slice(1)}
                   </Text>
                 </View>
@@ -103,13 +106,13 @@ export function RecommendedOutfit({
             alignSelf: "center",
             paddingHorizontal: 24,
             paddingVertical: 12,
-            backgroundColor: "#ddd",
+            backgroundColor: Theme.colors.lightGray,
             borderRadius: 20,
           }}
         >
           <Text style={{ fontSize: 16 }}>Close</Text>
         </Pressable>
-      </View>
+      </SafeAreaView>
     </Modal>
   )
 }

@@ -65,8 +65,8 @@ export function Dropdown({
           borderBottomStartRadius: open ? 0 : 10,
           borderBottomEndRadius: open ? 0 : 10,
           borderWidth: 1,
-          borderColor: Theme.base.lightA0,
-          shadowColor: "#000",
+          borderColor: Theme.colors.white,
+          shadowColor: Theme.colors.black,
           elevation: 2,
           marginBottom: 8,
         }}
@@ -93,7 +93,7 @@ export function Dropdown({
               </Text>
             )}
         </View>
-        <Feather name={open ? "chevron-up" : "chevron-down"} size={20} color={Theme.base.darkA0} />
+        <Feather name={open ? "chevron-up" : "chevron-down"} size={20} color={Theme.colors.black} />
       </Pressable>
 
       <Modal visible={open} transparent animationType="none">
@@ -107,7 +107,7 @@ export function Dropdown({
             position: "absolute",
             top: layout.y + layout.height,
             left: layout.x,
-            backgroundColor: "white",
+            backgroundColor: Theme.colors.white,
             padding: 20,
             width: layout.width,
             borderBottomStartRadius: 10,

@@ -1,3 +1,4 @@
+import { Theme } from "@/styles/Colors"
 import Feather from "@expo/vector-icons/Feather"
 import React from "react"
 import { Pressable, StyleSheet } from "react-native"
@@ -42,7 +43,7 @@ export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
         },
       ]}
     >
-      <Feather name="plus" size={24} color="#fff" />
+      <Feather name="plus" size={24} color={Theme.colors.white} />
     </Pressable>
   )
 }
@@ -50,7 +51,7 @@ export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
 const styles = StyleSheet.create({
   fab: {
     position: "absolute",
-    backgroundColor: "rgb(237, 117, 47)",
+    backgroundColor: Theme.colors.orange,
     alignItems: "center",
     justifyContent: "center",
 
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     elevation: 6,
 
     // iOS shadow:
-    shadowColor: "#000",
+    shadowColor: Theme.colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.4,
     shadowRadius: 6,

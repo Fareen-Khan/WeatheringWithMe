@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { deleteClothingItem, getAllClothingItems, getTagsForItems } from "@/utils/db";
 import { ClothingItem } from "@/utils/types";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { Theme } from "@/styles/Colors";
 
 export default function Outfits() {
   const [allClothingItems, setAllClothingItems] = useState<ClothingItem[]>([]);
@@ -79,7 +80,7 @@ export default function Outfits() {
             flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between",
 
             // iOS shadow:
-            shadowColor: "#000",
+            shadowColor: Theme.colors.black,
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.5,
             shadowRadius: 6,
@@ -112,12 +113,12 @@ export default function Outfits() {
                     position: "absolute",
                     top: 8,
                     right: 8,
-                    backgroundColor: "rgba(0,0,0,0.6)",
+                    backgroundColor: Theme.colors.black70,  
                     borderRadius: 12,
                     padding: 4,
                   }}
                 >
-                  <Feather name="more-horizontal" size={24} color="white" />
+                  <Feather name="more-horizontal" size={24} color={Theme.colors.white} />
                 </Pressable>
                 {menuOpenId === item.id && (
                   <View
@@ -125,10 +126,10 @@ export default function Outfits() {
                       position: "absolute",
                       top: 36,
                       right: 8,
-                      backgroundColor: "#fff",
+                      backgroundColor: Theme.colors.black,
                       borderRadius: 6,
                       elevation: 4,
-                      shadowColor: "#000",
+                      shadowColor: Theme.colors.black,
                       shadowOpacity: 0.2,
                       shadowOffset: { width: 0, height: 1 },
                       shadowRadius: 2,

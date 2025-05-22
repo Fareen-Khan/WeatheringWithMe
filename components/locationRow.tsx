@@ -37,7 +37,7 @@ const searchResults = ({ data }: { data: GeoResponse[] }) => {
               }}
               style={({ pressed }) => [
                 styles.rowButton,
-                { backgroundColor: pressed ? "#695DA2" : "transparent" },
+                { backgroundColor: pressed ? Theme.colors.purple : "transparent" },
               ]}
             >
               <Text style={styles.rowText}>
@@ -56,9 +56,9 @@ const searchResults = ({ data }: { data: GeoResponse[] }) => {
               }}
             >
               {isCityFavorited ? (
-                <AntDesign name="heart" size={20} color="white" />
+                <AntDesign name="heart" size={20} color={Theme.colors.white} />
               ) : (
-                <Feather name="heart" size={20} color="white" />
+                <Feather name="heart" size={20} color={Theme.colors.white} />
               )}
             </Pressable>
           </View>
@@ -82,7 +82,7 @@ const favoritesResults = ({ favorites }: { favorites: string[] }) => {
               }}
               style={({ pressed }) => [
                 styles.rowButton,
-                { backgroundColor: pressed ? "#695DA2" : "transparent" },
+                { backgroundColor: pressed ? Theme.colors.purple : "transparent" },
               ]}
             >
               {/* Display the city and country. Assumes the favorite string is "City,Country" */}
@@ -140,12 +140,12 @@ const styles = StyleSheet.create({
   },
   rowText: {
     fontSize: 16,
-    color: Theme.base.lightA0,
+    color: Theme.colors.white,
     padding: 10,
   },
   infoText: {
     fontSize: 16,
-    color: Theme.base.lightA0,
+    color: Theme.colors.white,
     padding: 10,
   },
 });

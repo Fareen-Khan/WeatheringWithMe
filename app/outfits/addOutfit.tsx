@@ -82,11 +82,11 @@ export default function Outfits() {
             style={{
               width: "100%",
               aspectRatio: 1,
-              backgroundColor: "rgba(255,255,255,0.2)",
+              backgroundColor: Theme.colors.black20,
               borderRadius: 12,
               borderWidth: 2,
               borderStyle: "dashed",
-              borderColor: "#fff",
+              borderColor: Theme.colors.white,
               overflow: "hidden",
               justifyContent: "center",
               alignItems: "center",
@@ -97,8 +97,8 @@ export default function Outfits() {
               ? <Image source={{ uri: image }} style={{ width: "100%", height: "100%", resizeMode: "cover" }} />
               : (
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
-                  <Feather name="camera" size={48} color="#fff" />
-                  <Text style={{ color: "#fff", marginTop: 8, fontSize: 16 }}>
+                  <Feather name="camera" size={48} color={Theme.colors.white} />
+                  <Text style={{ color: Theme.colors.white, marginTop: 8, fontSize: 16 }}>
                     Tap to select photo
                   </Text>
                 </View>
@@ -138,11 +138,11 @@ export default function Outfits() {
                 paddingVertical: 12,
                 borderRadius: 24,
                 borderWidth: 2,
-                borderColor: Theme.primary.a0,
+                borderColor: Theme.colors.gray,
                 alignItems: "center",
               }}
             >
-              <Text style={{ color: Theme.primary.a0, fontSize: 16, fontWeight: "600" }}>
+              <Text style={{ color: Theme.colors.gray, fontSize: 16, fontWeight: "600" }}>
                 Cancel
               </Text>
             </Pressable>
@@ -155,11 +155,11 @@ export default function Outfits() {
                 marginLeft: 8,
                 paddingVertical: 12,
                 borderRadius: 24,
-                backgroundColor: Theme.primary.a0,
+                backgroundColor: Theme.colors.gray,
                 alignItems: "center",
               }}
             >
-              <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
+              <Text style={{ color: Theme.colors.white, fontSize: 16, fontWeight: "600" }}>
                 Add
               </Text>
             </Pressable>

@@ -7,13 +7,12 @@ export default function RootLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Theme.base.lightA0,
-        tabBarInactiveTintColor: "rgba(255,255,255,0.5)",
+        tabBarActiveTintColor: Theme.colors.white,
+        tabBarInactiveTintColor: Theme.colors.lightGray,
         tabBarStyle: {
-          backgroundColor: "#000",
+          backgroundColor: Theme.colors.black,
           borderTopWidth: 0,
           elevation: 0,
-          // position: "absolute",
         },
       }}
 
