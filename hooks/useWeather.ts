@@ -16,7 +16,8 @@ export default function useWeather() {
 	const city = typeof location === "string" ? location : "Toronto"
 
 	// A helper function to fetch weather by a city name.
-	const fetchWeatherForCity = useCallback(async (cityName: string) => {
+  const fetchWeatherForCity = useCallback(async (cityName: string) => {
+    setLoading(true)
 		try {
 			const weatherData = await getCurrentWeather(cityName)
 			const forecastData = await get5DayForecast(cityName)
@@ -31,7 +32,8 @@ export default function useWeather() {
 	}, [])
 
 	// get current location and fetch weather for it
-	const fetchCurrentLocationAndWeather = useCallback(async () => {
+  const fetchCurrentLocationAndWeather = useCallback(async () => {
+    setLoading(true)
 		try {
 			const { status } = await Location.requestForegroundPermissionsAsync()
 			if (status !== "granted") {
@@ -55,7 +57,7 @@ export default function useWeather() {
 			// Fallback in case of error.
 			return fetchWeatherForCity("Toronto")
 		}
-	}, [fetchWeatherForCity])
+  }, [fetchWeatherForCity])
 
 	// pill items:
 	const pillItems: PillItem[] = useMemo(() => {
@@ -77,28 +79,23 @@ export default function useWeather() {
 				unit: "mm",
 			})
 		return items
-	}, [data])
-
-	useEffect(() => {
+  }, [data])
+  
+  useEffect(() => {
 		if (location && typeof location === "string") {
 			// console.log("Using searched location:", location);
 			fetchWeatherForCity(location)
 		} else {
 			fetchCurrentLocationAndWeather()
 		}
-  }, [city])
+	}, [city])
+
   
   return {
-    data,
-    forecast,
-    loading,
-    pillItems,
-    refresh: () => {
-      if (location && typeof location === "string") {
-				fetchWeatherForCity(location)
-			} else {
-				fetchCurrentLocationAndWeather()
-			}
-    }
-  }
+		data,
+		forecast,
+		loading,
+		pillItems,
+		refresh: () => fetchCurrentLocationAndWeather(),
+	}
 }
