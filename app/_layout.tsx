@@ -19,12 +19,15 @@ export default function RootLayout() {
     >
       <Tabs.Screen name="(home)" options={{
         tabBarIcon: ({ color }) => <Feather name="home" size={20} color={color} />,
-        title: "Home"
+        title: "Home",
+        popToTopOnBlur: true,
       }} />
 
       <Tabs.Screen name="outfits" options={{
         tabBarIcon: ({ color }) => <Feather name="tag" size={20} color={color} />,
-        title: "Outfits"
+        title: "Outfits",
+        popToTopOnBlur: true,
+
       }} />
     </Tabs>
   )

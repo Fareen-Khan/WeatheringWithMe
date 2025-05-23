@@ -1,68 +1,17 @@
 import { Dropdown } from "@/components/dropdown";
 import { Theme } from "@/styles/Colors";
 import { globalStyles } from "@/styles/weatherStyles";
-import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import React from "react";
 import { Image, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
 
-import { addClothingItem, addItemTag } from "@/utils/db";
-import { ClothingItem } from "@/utils/types";
+import useClothingForm from "@/hooks/useClothingForm";
+import { possibleClothingTypes, possibleTags } from "@/utils/constants";
 import { Feather } from "@expo/vector-icons";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { router } from "expo-router";
 
 export default function Outfits() {
-  const [image, setImage] = useState<string | null>(null);
-  const [clothingType, setClothingType] = useState<string[]>([])
-  const [tags, setTags] = useState<string[]>([])
-  const tabBarHeight = useBottomTabBarHeight();
+  const { image, clothingType, tags, pickImage, setClothingType, setTags, addClothingItemToDb } = useClothingForm()
 
-  const possibleClothingTypes = [
-    { label: "Shirt", value: "Shirt" },
-    { label: "Shoe", value: "Shoe" },
-    { label: "Pants", value: "Pants" },
-    { label: "Headwear", value: "Headwear" },
-  ]
-
-  // Each represnets a temp range
-  const possibleTags = [
-    { label: "Summer", value: "Summer" }, // temp > 22
-    { label: "Winter", value: "Winter" }, // temp < 8
-    { label: "Spring", value: "Spring" }, // temp < 22
-    { label: "Fall", value: "Fall" }, //temp < 15
-  ]
-
-  // logic to open the image picker
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    })
-    console.log(result);
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  }
-
-  const addClothingItemToDb = async () => {
-    const item: ClothingItem = {
-      type: clothingType[0],
-      imageUri: image,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    }
-
-    const clothingId = await addClothingItem(item);
-    // Add tags to the item
-    tags.map(async (tag) => {
-      const tagId = await addItemTag(clothingId, tag);
-    })
-
-    router.back();
-
-  }
 
   return (
     <ImageBackground
