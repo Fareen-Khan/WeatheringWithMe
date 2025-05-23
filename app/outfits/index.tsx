@@ -1,32 +1,19 @@
 import { FAB } from "@/components/FAB";
+import useClothingItems from "@/hooks/useClothingItems";
 import { Theme } from "@/styles/Colors";
 import { globalStyles } from "@/styles/weatherStyles";
-import { deleteClothingItem, getAllClothingItems, getTagsForItems } from "@/utils/db";
-import { ClothingItem } from "@/utils/types";
 import { Feather } from "@expo/vector-icons";
-import { useFocusEffect, useRouter } from "expo-router";
-import React, { useCallback, useState } from "react";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Outfits() {
-  const [allClothingItems, setAllClothingItems] = useState<ClothingItem[]>([]);
-  const [tagsMap, setTagsMap] = useState<Record<number, string>>({});
+  const { allClothingItems, tagsMap, loading, reload, deleteItem } = useClothingItems()
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null)
 
 
   const router = useRouter();
-
-  async function loadAll() {
-    const fetchedItems = await getAllClothingItems();
-    setAllClothingItems(fetchedItems);
-
-    const entries = await Promise.all(fetchedItems.map(async (item) => {
-      const tags = await getTagsForItems(item.id!)
-      return [item.id!, tags.join(", ")]
-    }))
-    setTagsMap(Object.fromEntries(entries))
-  }
 
   const handleDelete = async (itemId: number) => {
     Alert.alert(
@@ -40,22 +27,15 @@ export default function Outfits() {
         {
           text: "Delete",
           onPress: async () => {
-            await deleteClothingItem(itemId)
             setMenuOpenId(null)
-            loadAll()
-          },
+            deleteItem(itemId)
+          }, 
           style: "destructive",
         },
       ],
       { cancelable: false }
     )
   }
-
-  useFocusEffect(
-    useCallback(() => {
-      loadAll();
-    }, [])
-  );
 
   return (
     <ImageBackground
