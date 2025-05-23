@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator, Image, ScrollView } from "react-native";
 import { ForecastResponse } from "@/utils/types";
-import { weatherStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles as styles } from "@/styles/weatherStyles";
 
 interface CardProps {
   data: ForecastResponse | null;

@@ -1,7 +1,7 @@
-import { weatherStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles as styles } from "@/styles/weatherStyles";
 import { Text, Image } from "react-native";
 
-interface WeatherSummaryProps { 
+interface WeatherSummaryProps {
   feelsLike: number;
   temp: number;
   icon: string;
@@ -18,9 +18,9 @@ export function WeatherSummary({ feelsLike, temp, icon, unit }: WeatherSummaryPr
         }}
         style={styles.icon}
       />
-      <Text style={styles.tempText}>{Math.round(feelsLike)}{ unit}</Text>
+      <Text style={styles.tempText}>{Math.round(feelsLike)}{unit}</Text>
       <Text style={styles.detailsText}>
-        Actual: {Math.round(temp)}{ unit}
+        Actual: {Math.round(temp)}{unit}
       </Text>
     </>
   );

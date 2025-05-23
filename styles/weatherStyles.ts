@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native"
 import { Theme } from "@/styles/Colors"
 
 const { height } = Dimensions.get("window")
-export const weatherStyles = StyleSheet.create({
+export const globalStyles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: "center",

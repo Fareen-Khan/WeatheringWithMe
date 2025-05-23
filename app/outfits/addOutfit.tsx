@@ -1,6 +1,6 @@
 import { Dropdown } from "@/components/dropdown";
 import { Theme } from "@/styles/Colors";
-import { weatherStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles as styles } from "@/styles/weatherStyles";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import { Image, ImageBackground, Pressable, Text, View } from "react-native";

@@ -1,5 +1,5 @@
 import { Theme } from "@/styles/Colors";
-import { weatherStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles as styles } from "@/styles/weatherStyles";
 import { Feather } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { Pressable, Text, View } from "react-native";

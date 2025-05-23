@@ -1,6 +1,6 @@
 import CardList from "@/components/cardList";
 import { RecommendedOutfit } from "@/components/reccomendedOutfit";
-import { weatherStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles } from "@/styles/weatherStyles";
 import React, { useState } from "react";
 import { ActivityIndicator, Image, ImageBackground, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,7 +12,7 @@ import useOutfit from "@/hooks/useOutfit";
 import useRandomOutfit from "@/hooks/useRandomOutfit";
 import useWeather from "@/hooks/useWeather";
 import { Theme } from "@/styles/Colors";
-
+import { StyleSheet } from "react-native";
 
 export default function Index() {
   const [isVisible, setIsVisible] = useState(false)
@@ -28,14 +28,14 @@ export default function Index() {
   return (
     <ImageBackground
       source={require("@/assets/images/night_time.png")}
-      style={[styles.bgImage]}
+      style={globalStyles.bgImage}
       resizeMode="cover"
     >
       <SafeAreaView
-        style={{ justifyContent: "space-between", alignItems: "center", flex: 1 }}
+        style={styles.safeAreaView}
         edges={["top"]}
       >
-        <View style={{ alignItems: "center" }}>
+        <View style={styles.topContainer}>
           <LocationHeader
             city={data.name}
             country={data.sys.country}
@@ -56,23 +56,16 @@ export default function Index() {
         <View style={{ flex: 1 }}>
           <Image
             source={outfit != null ? outfit : require("@/assets/images/outfits/1-2.png")}
-            style={{ height: "100%", resizeMode: "contain" }}
+            style={styles.outfitImage}
           />
         </View>
 
         <View>
           <Pressable
             onPress={() => setIsVisible(true)}
-            style={{
-              marginTop: 16,
-              alignSelf: "center",
-              paddingHorizontal: 24,
-              paddingVertical: 12,
-              backgroundColor: Theme.colors.lighterGray,
-              borderRadius: 20,
-            }}
+            style={styles.button}
           >
-            <Text style={[styles.detailsText, { color: Theme.colors.black }]}>See suggested outfit</Text>
+            <Text style={styles.buttonText}>See suggested outfit</Text>
           </Pressable>
           <RecommendedOutfit
             visible={isVisible}
@@ -87,3 +80,33 @@ export default function Index() {
 
   );
 }
+
+
+const styles = StyleSheet.create({
+  safeAreaView: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    flex: 1
+  },
+
+  outfitImage: {
+    height: "100%",
+    resizeMode: "contain"
+  },
+
+  button: {
+    marginTop: 16,
+    alignSelf: "center",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    backgroundColor: Theme.colors.lighterGray,
+    borderRadius: 20,
+  },
+
+  buttonText: {
+    ...globalStyles.detailsText,
+    color: Theme.colors.black
+  },
+
+  topContainer: { alignItems: "center" }
+});

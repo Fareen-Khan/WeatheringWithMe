@@ -1,5 +1,5 @@
 import { FAB } from "@/components/FAB";
-import { weatherStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles as styles } from "@/styles/weatherStyles";
 import { Feather } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
@@ -113,7 +113,7 @@ export default function Outfits() {
                     position: "absolute",
                     top: 8,
                     right: 8,
-                    backgroundColor: Theme.colors.black70,  
+                    backgroundColor: Theme.colors.black70,
                     borderRadius: 12,
                     padding: 4,
                   }}
