@@ -51,7 +51,7 @@ export function FAB({ onPress, position = "right", size = 56 }: FABProps) {
 const styles = StyleSheet.create({
   fab: {
     position: "absolute",
-    backgroundColor: Theme.colors.orange,
+    backgroundColor: Theme.colors.gray,
     alignItems: "center",
     justifyContent: "center",
 

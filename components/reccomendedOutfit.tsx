@@ -71,16 +71,9 @@ export function RecommendedOutfit({
 
         <Pressable
           onPress={onClose}
-          style={{
-            marginTop: 16,
-            alignSelf: "center",
-            paddingHorizontal: 24,
-            paddingVertical: 12,
-            backgroundColor: Theme.colors.lightGray,
-            borderRadius: 20,
-          }}
+          style={styles.button}
         >
-          <Text style={{ fontSize: 16 }}>Close</Text>
+          <Text style={{ fontSize: 16, color: Theme.colors.white }}>Close</Text>
         </Pressable>
       </SafeAreaView>
     </Modal>
@@ -124,10 +117,19 @@ const styles = StyleSheet.create({
     height: 100,
     textAlign: "center",
     textAlignVertical: "center",
-    backgroundColor: Theme.colors.lightGray,
+    backgroundColor: Theme.colors.gray,
     borderRadius: 8,
-    color: Theme.colors.black70,
+    color: Theme.colors.lighterGray,
   },
 
-  emptyTextContainer: { marginTop: 4, fontSize: 14, color: Theme.colors.lightGray }
+  emptyTextContainer: { marginTop: 4, fontSize: 14, color: Theme.colors.white },
+
+  button: {
+    marginTop: 16,
+    alignSelf: "center",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    backgroundColor: Theme.colors.gray,
+    borderRadius: 20,
+  }
 })

@@ -99,13 +99,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingHorizontal: 24,
     paddingVertical: 12,
-    backgroundColor: Theme.colors.lighterGray,
+    backgroundColor: Theme.colors.gray,
     borderRadius: 20,
   },
 
   buttonText: {
     ...globalStyles.detailsText,
-    color: Theme.colors.black
+    fontWeight:"600",
+    color: Theme.colors.white
   },
 
   topContainer: { alignItems: "center" }
