@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator, Image, ScrollView } from "react-native";
 import { ForecastResponse } from "@/utils/types";
-import { globalStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles } from "@/styles/weatherStyles";
 
 interface CardProps {
   data: ForecastResponse | null;
@@ -25,20 +25,20 @@ export default function CardList({ data }: CardProps) {
   return (
     <ScrollView
       horizontal={true}
-      contentContainerStyle={styles.cardContainer}
+      contentContainerStyle={globalStyles.cardContainer}
       style={{ flexGrow: 0 }}
     >
       {data.list.map((item, index) => (
-        <View key={index} style={styles.cardSubContainer}
+        <View key={index} style={globalStyles.cardSubContainer}
         >
-          <Text style={styles.detailsText}>
+          <Text style={globalStyles.detailsText}>
             {
               new Date(item.dt * 1000).toLocaleDateString("en-US", {
                 weekday: "long",
               })
             }
           </Text>
-          <Text style={styles.detailsText}>
+          <Text style={globalStyles.detailsText}>
             {
               new Date(item.dt * 1000).toLocaleTimeString("en-US", {
                 hour: "numeric",
@@ -51,8 +51,8 @@ export default function CardList({ data }: CardProps) {
             }}
             style={{ width: 50, height: 50, alignSelf: "center" }}
           />
-          <Text style={styles.subDetailsText}>Feels Like: </Text>
-          <Text style={styles.detailsText}>{Math.round(item.main.feels_like)}°C</Text>
+          <Text style={globalStyles.subDetailsText}>Feels Like: </Text>
+          <Text style={globalStyles.detailsText}>{Math.round(item.main.feels_like)}°C</Text>
         </View>
       ))}
     </ScrollView>

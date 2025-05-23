@@ -1,8 +1,8 @@
 import { Theme } from "@/styles/Colors";
-import { globalStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles } from "@/styles/weatherStyles";
 import { Feather } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 
 interface LocationHeaderProps {
@@ -14,10 +14,10 @@ interface LocationHeaderProps {
 
 export function LocationHeader({ city, country, onRefresh, searchRef }: LocationHeaderProps) {
   return (
-    <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+    <View style={styles.locationHeaderContainer}>
       <Link href={"/(home)/search"}>
         <Feather name="search" size={20} color={Theme.colors.white} />
-        <Text style={styles.locationText}>
+        <Text style={globalStyles.locationText}>
           {city}, {country}
         </Text>
       </Link>
@@ -29,3 +29,7 @@ export function LocationHeader({ city, country, onRefresh, searchRef }: Location
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  locationHeaderContainer: { flexDirection: "row", gap: 10, alignItems: "center" }
+})

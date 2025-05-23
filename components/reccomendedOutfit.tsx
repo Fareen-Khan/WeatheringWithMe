@@ -10,6 +10,7 @@ import {
 import { Outfit } from "@/utils/types"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Theme } from "@/styles/Colors"
+import { StyleSheet } from "react-native"
 
 interface RecommendedOutfitProps {
   visible: boolean
@@ -25,25 +26,11 @@ export function RecommendedOutfit({
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <SafeAreaView
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: Theme.colors.modalBackgroundDark, 
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
-          padding: 16,
-        }}
+        style={styles.safeAreaView}
         edges={["bottom"]}
       >
         <Text
-          style={{
-            fontSize: 18,
-            fontWeight: "600",
-            marginBottom: 12,
-            textAlign: "center",
-          }}
+          style={styles.homepageText}
         >
           Your Suggested Outfit
         </Text>
@@ -59,38 +46,21 @@ export function RecommendedOutfit({
               return (
                 <View
                   key={slot}
-                  style={{
-                    width: 100,
-                    height: 120,
-                    marginRight: 12,
-                    alignItems: "center",
-                  }}
+                  style={styles.imageContainer}
                 >
                   {item ? (
                     <Image
                       source={{ uri: item.imageUri! }}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        borderRadius: 8,
-                      }}
+                      style={styles.image}
                     />
                   ) : (
                     <Text
-                      style={{
-                        width: 100,
-                        height: 100,
-                        textAlign: "center",
-                        textAlignVertical: "center",
-                        backgroundColor: Theme.colors.lightGray,
-                        borderRadius: 8,
-                        color: Theme.colors.black70,
-                      }}
+                      style={styles.emptyText}
                     >
                       No {slot} yet
                     </Text>
                   )}
-                  <Text style={{ marginTop: 4, fontSize: 14, color: Theme.colors.lightGray}}>
+                  <Text style={styles.emptyTextContainer}>
                     {slot.charAt(0).toUpperCase() + slot.slice(1)}
                   </Text>
                 </View>
@@ -116,3 +86,48 @@ export function RecommendedOutfit({
     </Modal>
   )
 }
+
+const styles = StyleSheet.create({
+  safeAreaView: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: Theme.colors.modalBackgroundDark,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 16,
+  },
+
+  homepageText: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 12,
+    textAlign: "center",
+  },
+
+  imageContainer: {
+    width: 100,
+    height: 120,
+    marginRight: 12,
+    alignItems: "center",
+  },
+
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+  },
+
+  emptyText: {
+    width: 100,
+    height: 100,
+    textAlign: "center",
+    textAlignVertical: "center",
+    backgroundColor: Theme.colors.lightGray,
+    borderRadius: 8,
+    color: Theme.colors.black70,
+  },
+
+  emptyTextContainer: { marginTop: 4, fontSize: 14, color: Theme.colors.lightGray }
+})

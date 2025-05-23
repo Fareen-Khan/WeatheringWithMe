@@ -55,34 +55,17 @@ export function Dropdown({
       <Pressable
         onPress={handleOpen}
         ref={triggerRef}
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: 16,
-          backgroundColor: "white",
-          borderRadius: 10,
+        style={[styles.dropdown, {
           borderBottomStartRadius: open ? 0 : 10,
           borderBottomEndRadius: open ? 0 : 10,
-          borderWidth: 1,
-          borderColor: Theme.colors.white,
-          shadowColor: Theme.colors.black,
-          elevation: 2,
-          marginBottom: 8,
-        }}
+        }]}
       >
         <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
           {selected.length > 0
             ? selected.map(name => (
               <Text
                 key={name}
-                style={singleSelect ? {} : {
-                  marginRight: 4,
-                  paddingHorizontal: 6,
-                  paddingVertical: 3,
-                  backgroundColor: "gray",
-                  borderRadius: 10,
-                }}
+                style={singleSelect ? {} : styles.dropdownText}
               >
                 {name}
               </Text>
@@ -103,16 +86,11 @@ export function Dropdown({
         />
 
         <View
-          style={{
-            position: "absolute",
+          style={[styles.modalOpen, {
             top: layout.y + layout.height,
             left: layout.x,
-            backgroundColor: Theme.colors.white,
-            padding: 20,
             width: layout.width,
-            borderBottomStartRadius: 10,
-            borderBottomEndRadius: 10,
-          }}
+          }]}
         >
           {allTags.map(tag => (
             <Pressable
@@ -128,3 +106,39 @@ export function Dropdown({
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+
+  dropdown: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Theme.colors.white,
+    shadowColor: Theme.colors.black,
+    elevation: 2,
+    marginBottom: 8,
+  },
+
+  dropdownText: {
+    marginRight: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    backgroundColor: "gray",
+    borderRadius: 10,
+  },
+
+  modalOpen: {
+    position: "absolute",
+    backgroundColor: Theme.colors.white,
+    padding: 20,
+    borderBottomStartRadius: 10,
+    borderBottomEndRadius: 10,
+  },
+
+
+
+})
