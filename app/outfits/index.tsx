@@ -1,22 +1,18 @@
 import { FAB } from "@/components/FAB";
-import { globalStyles as styles } from "@/styles/weatherStyles";
+import { Theme } from "@/styles/Colors";
+import { globalStyles } from "@/styles/weatherStyles";
+import { deleteClothingItem, getAllClothingItems, getTagsForItems } from "@/utils/db";
+import { ClothingItem } from "@/utils/types";
 import { Feather } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
-import { Alert, Image, ImageBackground, Pressable, ScrollView, Text, View } from "react-native";
+import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-
-import { deleteClothingItem, getAllClothingItems, getTagsForItems } from "@/utils/db";
-import { ClothingItem } from "@/utils/types";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { Theme } from "@/styles/Colors";
 
 export default function Outfits() {
   const [allClothingItems, setAllClothingItems] = useState<ClothingItem[]>([]);
   const [tagsMap, setTagsMap] = useState<Record<number, string>>({});
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null)
-  const tabBarHeight = useBottomTabBarHeight();
 
 
   const router = useRouter();
@@ -64,44 +60,24 @@ export default function Outfits() {
   return (
     <ImageBackground
       source={require("@/assets/images/night_time.png")}
-      style={styles.bgImage}
+      style={globalStyles.bgImage}
       resizeMode="cover"
     >
-      <SafeAreaView style={{
-        flex: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+      <SafeAreaView style={styles.safeAreaView}
         edges={["top"]}>
 
         <ScrollView
           style={{ flex: 1 }}
-          contentContainerStyle={{
-            flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between",
-
-            // iOS shadow:
-            shadowColor: Theme.colors.black,
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.5,
-            shadowRadius: 6,
-          }}
+          contentContainerStyle={styles.scrollViewContent}
         >
           {
             allClothingItems.map((item) => (
               <View
                 key={item.id}
-                style={{
-                  width: "48%",
-                  aspectRatio: 1,
-                  marginBottom: 20,
-                  borderRadius: 10,
-                  overflow: "hidden",
-                  // Android shadow:
-                  elevation: 10,
-                }}>
+                style={styles.clothingItem}>
                 <Image
                   source={{ uri: item.imageUri ?? "https://picsum.photos/200/300" }}
-                  style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+                  style={styles.clothingItemImage}
                 />
                 <Pressable
                   onPress={() => {
@@ -109,38 +85,17 @@ export default function Outfits() {
                       prev === item.id ? null : item.id!
                     )
                   }}
-                  style={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    backgroundColor: Theme.colors.black70,
-                    borderRadius: 12,
-                    padding: 4,
-                  }}
+                  style={styles.clothingItemMenu}
                 >
                   <Feather name="more-horizontal" size={24} color={Theme.colors.white} />
                 </Pressable>
                 {menuOpenId === item.id && (
                   <View
-                    style={{
-                      position: "absolute",
-                      top: 36,
-                      right: 8,
-                      backgroundColor: Theme.colors.black,
-                      borderRadius: 6,
-                      elevation: 4,
-                      shadowColor: Theme.colors.black,
-                      shadowOpacity: 0.2,
-                      shadowOffset: { width: 0, height: 1 },
-                      shadowRadius: 2,
-                    }}
+                    style={styles.clothingItemMenuText}
                   >
                     <Pressable
                       onPress={() => handleDelete(item.id!)}
-                      style={{
-                        paddingVertical: 8,
-                        paddingHorizontal: 12,
-                      }}
+                      style={styles.deleteButton}
                     >
                       <Text style={{ color: "red", fontWeight: "500" }}>
                         Delete
@@ -162,3 +117,64 @@ export default function Outfits() {
 
   );
 }
+
+const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  scrollViewContent: {
+    flexDirection: "row", flexWrap: "wrap", padding: 20, justifyContent: "space-between",
+
+    // iOS shadow:
+    shadowColor: Theme.colors.black,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+  },
+
+  clothingItem: {
+    width: "48%",
+    aspectRatio: 1,
+    marginBottom: 20,
+    borderRadius: 10,
+    overflow: "hidden",
+    // Android shadow:
+    elevation: 10,
+  },
+
+  clothingItemImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover"
+  },
+
+  clothingItemMenu: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    backgroundColor: Theme.colors.black70,
+    borderRadius: 12,
+    padding: 4,
+  },
+
+  clothingItemMenuText: {
+    position: "absolute",
+    top: 36,
+    right: 8,
+    backgroundColor: Theme.colors.black,
+    borderRadius: 6,
+    elevation: 4,
+    shadowColor: Theme.colors.black,
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 2,
+  },
+
+  deleteButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  }
+})

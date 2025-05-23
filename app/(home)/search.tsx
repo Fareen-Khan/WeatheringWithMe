@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { View, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView } from "react-native";
-import { router } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { getListofCities } from "@/api/weather";
-import { GeoResponse } from "@/utils/types";
-import { Theme } from "@/styles/Colors"
 import { LocationRow } from "@/components/locationRow";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { Theme } from "@/styles/Colors";
+import { GeoResponse } from "@/utils/types";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from "react";
+import { ImageBackground, Pressable, ScrollView, StyleSheet, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Search() {
   const [location, setLocation] = useState("");
   const [locationResults, setLocationResults] = useState<GeoResponse[] | { cod: number; message: string }>([]);
-  const tabBarHeight = useBottomTabBarHeight();
 
 
   useEffect(() => {
@@ -33,12 +31,12 @@ export default function Search() {
   return (
     <ImageBackground
       source={require("@/assets/images/night_time.png")}
-      style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
+      style={styles.bgImage}
       resizeMode="cover"
       blurRadius={10}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={[styles.container]}>
+        <View style={styles.container}>
           <Pressable onPress={() => router.back()}>
             <Feather name="arrow-left" size={20} color={Theme.colors.white} />
           </Pressable>

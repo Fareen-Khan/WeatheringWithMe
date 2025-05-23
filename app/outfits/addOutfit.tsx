@@ -1,9 +1,9 @@
 import { Dropdown } from "@/components/dropdown";
 import { Theme } from "@/styles/Colors";
-import { globalStyles as styles } from "@/styles/weatherStyles";
+import { globalStyles } from "@/styles/weatherStyles";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
-import { Image, ImageBackground, Pressable, Text, View } from "react-native";
+import { Image, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { addClothingItem, addItemTag } from "@/utils/db";
 import { ClothingItem } from "@/utils/types";
@@ -67,103 +67,64 @@ export default function Outfits() {
   return (
     <ImageBackground
       source={require("@/assets/images/night_time.png")}
-      style={[styles.bgImage, { flex: 1, paddingBottom: tabBarHeight }]}
+      style={globalStyles.bgImage}
       resizeMode="cover"
     >
-      <View style={[styles.container, { backgroundColor: "transparent" }]} >
-        <View style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 20,
-        }}>
+      <View style={[globalStyles.container, styles.innerView]} >
+        <Pressable
+          onPress={pickImage}
+          style={styles.imagePicker}
+        >
+          {image
+            ? <Image source={{ uri: image }} style={styles.fullImage} />
+            : (
+              <View style={styles.imagePlaceholder}>
+                <Feather name="camera" size={48} color={Theme.colors.white} />
+                <Text style={styles.placeholderText}>
+                  Tap to select photo
+                </Text>
+              </View>
+            )
+          }
+        </Pressable>
+        {/* Type of clothing */}
+
+        <Dropdown
+          selected={clothingType}
+          onChange={setClothingType}
+          allTags={possibleClothingTypes}
+          singleSelect={true}
+        />
+        {/* Tags */}
+        <Dropdown
+          selected={tags}
+          onChange={setTags}
+          allTags={possibleTags}
+        />
+
+
+        <View
+          style={styles.buttonContainer}
+        >
+          {/* Cancel */}
           <Pressable
-            onPress={pickImage}
-            style={{
-              width: "100%",
-              aspectRatio: 1,
-              backgroundColor: Theme.colors.black20,
-              borderRadius: 12,
-              borderWidth: 2,
-              borderStyle: "dashed",
-              borderColor: Theme.colors.white,
-              overflow: "hidden",
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 16,
-            }}
+            onPress={() => router.back()}
+            style={styles.button}
           >
-            {image
-              ? <Image source={{ uri: image }} style={{ width: "100%", height: "100%", resizeMode: "cover" }} />
-              : (
-                <View style={{ justifyContent: "center", alignItems: "center" }}>
-                  <Feather name="camera" size={48} color={Theme.colors.white} />
-                  <Text style={{ color: Theme.colors.white, marginTop: 8, fontSize: 16 }}>
-                    Tap to select photo
-                  </Text>
-                </View>
-              )
-            }
+            <Text style={[styles.buttonText, {color: Theme.colors.gray}]}>
+              Cancel
+            </Text>
           </Pressable>
-          {/* Type of clothing */}
 
-          <Dropdown
-            selected={clothingType}
-            onChange={setClothingType}
-            allTags={possibleClothingTypes}
-            singleSelect={true}
-          />
-          {/* Tags */}
-          <Dropdown
-            selected={tags}
-            onChange={setTags}
-            allTags={possibleTags}
-          />
-
-
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
-              marginVertical: 16,
-            }}
+          {/* Add */}
+          <Pressable
+            onPress={addClothingItemToDb}
+            style={[styles.button, {backgroundColor: Theme.colors.gray}]}
           >
-            {/* Cancel */}
-            <Pressable
-              onPress={() => router.back()}
-              style={{
-                flex: 1,
-                marginRight: 8,
-                paddingVertical: 12,
-                borderRadius: 24,
-                borderWidth: 2,
-                borderColor: Theme.colors.gray,
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: Theme.colors.gray, fontSize: 16, fontWeight: "600" }}>
-                Cancel
-              </Text>
-            </Pressable>
-
-            {/* Add */}
-            <Pressable
-              onPress={addClothingItemToDb}
-              style={{
-                flex: 1,
-                marginLeft: 8,
-                paddingVertical: 12,
-                borderRadius: 24,
-                backgroundColor: Theme.colors.gray,
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: Theme.colors.white, fontSize: 16, fontWeight: "600" }}>
-                Add
-              </Text>
-            </Pressable>
-          </View>
+            <Text style={styles.buttonText}>
+              Add
+            </Text>
+          </Pressable>
         </View>
 
 
@@ -172,3 +133,51 @@ export default function Outfits() {
     </ImageBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  innerView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+
+  imagePicker: {
+    width: "100%",
+    aspectRatio: 1,
+    backgroundColor: Theme.colors.black20,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderColor: Theme.colors.white,
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+
+  fullImage: { width: "100%", height: "100%", resizeMode: "cover" },
+
+  imagePlaceholder: { justifyContent: "center", alignItems: "center" },
+
+  placeholderText: { color: Theme.colors.white, marginTop: 8, fontSize: 16 },
+
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginVertical: 16,
+  },
+
+  button: {
+    flex: 1,
+    marginRight: 8,
+    paddingVertical: 12,
+    borderRadius: 24,
+    borderWidth: 2,
+    borderColor: Theme.colors.gray,
+    alignItems: "center",
+  },
+
+  buttonText: { color: Theme.colors.white, fontSize: 16, fontWeight: "600" }
+})
