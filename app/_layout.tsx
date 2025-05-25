@@ -25,7 +25,7 @@ export default function RootLayout() {
 
       <Tabs.Screen name="outfits" options={{
         tabBarIcon: ({ color }) => <Feather name="tag" size={20} color={color} />,
-        title: "Outfits",
+        title: "Wardrobe",
         popToTopOnBlur: true,
 
       }} />

@@ -8,7 +8,6 @@ export default function useLocationSearch(searchQuery: string) {
   
 	useEffect(() => {
 		if (searchQuery.trim() === "") {
-			console.log("location is empty showing favorites")
 			setLocationResults([])
 			return
     }
