@@ -1,21 +1,22 @@
-import React from "react"
+// src/components/RecommendedOutfit.tsx
+import React from "react";
 import {
   View,
   Text,
   Image,
   Modal,
   Pressable,
-  ScrollView,
-} from "react-native"
-import { Outfit } from "@/utils/types"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { Theme } from "@/styles/Colors"
-import { StyleSheet } from "react-native"
+  useWindowDimensions,
+  StyleSheet,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Theme } from "@/styles/Colors";
+import type { Outfit } from "@/utils/types";
 
 interface RecommendedOutfitProps {
-  visible: boolean
-  outfit: Outfit | null
-  onClose: () => void
+  visible: boolean;
+  outfit: Outfit | null;
+  onClose: () => void;
 }
 
 export function RecommendedOutfit({
@@ -23,65 +24,74 @@ export function RecommendedOutfit({
   outfit,
   onClose,
 }: RecommendedOutfitProps) {
+  const { width } = useWindowDimensions();
+
+  // compute dynamic card size so exactly 4 cards fit across
+  const SIDE_PADDING = 16;
+  const GAP = 12;
+  const COUNT = 4;
+  const cardWidth = (width - SIDE_PADDING * 2 - GAP * (COUNT - 1)) / COUNT;
+
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      <SafeAreaView
-        style={styles.safeAreaView}
-        edges={["bottom"]}
-      >
-        <Text
-          style={styles.homepageText}
-        >
-          Your Suggested Outfit
-        </Text>
+      <SafeAreaView style={styles.sheet} edges={["bottom"]}>
+        <Text style={styles.title}>Your Suggested Outfit</Text>
 
-        <ScrollView
-          horizontal
-          contentContainerStyle={{ paddingHorizontal: 8 }}
-          showsHorizontalScrollIndicator={false}
+        <View
+          style={[
+            styles.cardsRow,
+            { paddingHorizontal: SIDE_PADDING },
+          ]}
         >
           {(["shirt", "pants", "shoes", "headwear"] as (keyof Outfit)[]).map(
-            (slot) => {
-              const item = outfit?.[slot]
+            (slot, i) => {
+              const item = outfit?.[slot];
               return (
                 <View
                   key={slot}
-                  style={styles.imageContainer}
+                  style={[
+                    styles.card,
+                    {
+                      width: cardWidth,
+                      marginRight: i < COUNT - 1 ? GAP : 0,
+                    },
+                  ]}
                 >
                   {item ? (
                     <Image
                       source={{ uri: item.imageUri! }}
-                      style={styles.image}
+                      style={[styles.image, { width: cardWidth, height: cardWidth }]}
+                      resizeMode="cover"
                     />
                   ) : (
-                    <Text
-                      style={styles.emptyText}
+                    <View
+                      style={[
+                        styles.empty,
+                        { width: cardWidth, height: cardWidth },
+                      ]}
                     >
-                      No {slot} yet
-                    </Text>
+                      <Text style={styles.emptyText}>N/A</Text>
+                    </View>
                   )}
-                  <Text style={styles.emptyTextContainer}>
+                  <Text style={styles.label}>
                     {slot.charAt(0).toUpperCase() + slot.slice(1)}
                   </Text>
                 </View>
-              )
+              );
             }
           )}
-        </ScrollView>
+        </View>
 
-        <Pressable
-          onPress={onClose}
-          style={styles.button}
-        >
-          <Text style={{ fontSize: 16, color: Theme.colors.white }}>Close</Text>
+        <Pressable onPress={onClose} style={styles.button}>
+          <Text style={styles.buttonText}>Close</Text>
         </Pressable>
       </SafeAreaView>
     </Modal>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-  safeAreaView: {
+  sheet: {
     position: "absolute",
     bottom: 0,
     left: 0,
@@ -89,41 +99,43 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.colors.modalBackgroundDark,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    padding: 16,
+    paddingTop: 16,
+    paddingBottom: 32,
   },
-
-  homepageText: {
+  title: {
     fontSize: 18,
     fontWeight: "600",
-    marginBottom: 12,
+    color: Theme.colors.white,
     textAlign: "center",
+    marginBottom: 12,
   },
-
-  imageContainer: {
-    width: 100,
-    height: 120,
-    marginRight: 12,
+  cardsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  card: {
     alignItems: "center",
+    borderRadius: 8,
+    overflow: "hidden",
   },
-
   image: {
-    width: 100,
-    height: 100,
     borderRadius: 8,
   },
-
-  emptyText: {
-    width: 100,
-    height: 100,
-    textAlign: "center",
-    textAlignVertical: "center",
+  empty: {
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: Theme.colors.gray,
     borderRadius: 8,
-    color: Theme.colors.lighterGray,
   },
-
-  emptyTextContainer: { marginTop: 4, fontSize: 14, color: Theme.colors.white },
-
+  emptyText: {
+    color: Theme.colors.lighterGray,
+    textAlign: "center",
+  },
+  label: {
+    marginTop: 6,
+    color: Theme.colors.white,
+    fontSize: 14,
+  },
   button: {
     marginTop: 16,
     alignSelf: "center",
@@ -131,5 +143,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: Theme.colors.gray,
     borderRadius: 20,
-  }
-})
+  },
+  buttonText: {
+    color: Theme.colors.white,
+    fontSize: 16,
+  },
+});
