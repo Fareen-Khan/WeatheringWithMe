@@ -5,15 +5,19 @@ import { globalStyles } from "@/styles/weatherStyles";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Outfits() {
   const { allClothingItems, tagsMap, loading, reload, deleteItem } = useClothingItems()
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null)
-
-
   const router = useRouter();
+
+  const { width } = useWindowDimensions();
+  const numColumns = Math.floor(width / 150) || 2;      // 150px min column width
+  const itemMargin = 8;
+  // compute a perfect square size (subtract out the horizontal margins)
+  const itemSize = (width - itemMargin * (numColumns + 1)) / numColumns;
 
   const handleDelete = async (itemId: number) => {
     Alert.alert(
@@ -47,7 +51,7 @@ export default function Outfits() {
         edges={["top"]}>
 
         <ScrollView
-          style={{ flex: 1 }}
+          style={{ flex: 1, width: "100%"}}
           contentContainerStyle={styles.scrollViewContent}
         >
           {
@@ -87,6 +91,7 @@ export default function Outfits() {
             ))
           }
         </ScrollView>
+
 
       </SafeAreaView>
 

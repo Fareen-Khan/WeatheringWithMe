@@ -19,8 +19,8 @@ export default function Search() {
       blurRadius={10}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <Pressable onPress={() => router.back()}>
+        <View style={styles.container} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+          <Pressable onPress={() => router.back()} >
             <Feather name="arrow-left" size={20} color={Theme.colors.white} />
           </Pressable>
           <TextInput
