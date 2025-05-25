@@ -1,4 +1,3 @@
-// src/components/RecommendedOutfit.tsx
 import React from "react";
 import {
   View,
@@ -26,7 +25,6 @@ export function RecommendedOutfit({
 }: RecommendedOutfitProps) {
   const { width } = useWindowDimensions();
 
-  // compute dynamic card size so exactly 4 cards fit across
   const SIDE_PADDING = 16;
   const GAP = 12;
   const COUNT = 4;
