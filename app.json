@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "WeatherApp2",
-    "slug": "WeatherApp2",
+    "name": "Weathering With Me",
+    "slug": "weathering-with-me",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icons/icon.png",
