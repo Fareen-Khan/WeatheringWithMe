@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native"
 import { Theme } from "@/styles/Colors"
 
 const { height } = Dimensions.get("window")
-export const weatherStyles = StyleSheet.create({
+export const globalStyles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: "center",
@@ -32,7 +32,7 @@ export const weatherStyles = StyleSheet.create({
 		top: height * 0.7,
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
-		backgroundColor: Theme.primary.a0,
+		backgroundColor: Theme.colors.gray,
 		alignItems: "center",
 		justifyContent: "center",
 		paddingVertical: 10,
@@ -44,19 +44,19 @@ export const weatherStyles = StyleSheet.create({
 		alignSelf: "center",
 		marginBottom: -20,
 		backgroundColor: "transparent",
-		color: "white",
+		color: Theme.colors.white,
 	},
 
 	locationText: {
 		fontSize: 20,
 		fontWeight: "bold",
-		color: Theme.base.lightA0,
+		color: Theme.colors.white,
 		opacity: 0.8,
 	},
 	tempText: {
 		fontSize: 24,
 		fontWeight: "bold",
-		color: Theme.base.lightA0,
+		color: Theme.colors.white,
 		marginTop: 5,
 		elevation: 5,
 	},
@@ -64,13 +64,13 @@ export const weatherStyles = StyleSheet.create({
 		fontSize: 16,
 		fontWeight: "bold",
 		textAlign: "center",
-		color: Theme.base.lightA0,
+		color: Theme.colors.white,
 	},
 	subDetailsText: {
 		fontSize: 12,
 		fontWeight: "bold",
 		textAlign: "center",
-		color: Theme.base.lightA0,
+		color: Theme.colors.white,
 		opacity: 0.8,
 	},
 
@@ -93,6 +93,7 @@ export const weatherStyles = StyleSheet.create({
 		paddingVertical: 5,
 		elevation: 2,
 		overflow: "hidden",
+		marginBottom: 10,
 	},
 
 	cardContainer: {

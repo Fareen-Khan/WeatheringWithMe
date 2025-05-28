@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { GeoResponse } from "@/utils/types";
-import { Text, View, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView } from "react-native";
-import { router } from 'expo-router';
+import { Theme } from "@/styles/Colors";
 import { useFavorites } from "@/utils/favorites";
-import { Feather, AntDesign } from '@expo/vector-icons';
-import { Theme } from "@/styles/Colors"
+import { GeoResponse } from "@/utils/types";
+import { AntDesign, Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 
 type LocationRowProps = {
@@ -37,7 +37,7 @@ const searchResults = ({ data }: { data: GeoResponse[] }) => {
               }}
               style={({ pressed }) => [
                 styles.rowButton,
-                { backgroundColor: pressed ? "#695DA2" : "transparent" },
+                { backgroundColor: pressed ? Theme.colors.purple : "transparent" },
               ]}
             >
               <Text style={styles.rowText}>
@@ -56,9 +56,9 @@ const searchResults = ({ data }: { data: GeoResponse[] }) => {
               }}
             >
               {isCityFavorited ? (
-                <AntDesign name="heart" size={20} color="white" />
+                <AntDesign name="heart" size={20} color={Theme.colors.white} />
               ) : (
-                <Feather name="heart" size={20} color="white" />
+                <Feather name="heart" size={20} color={Theme.colors.white} />
               )}
             </Pressable>
           </View>
@@ -68,7 +68,7 @@ const searchResults = ({ data }: { data: GeoResponse[] }) => {
   )
 }
 
-const favoritesResults = ({ favorites }: {favorites:string[]}) => {
+const favoritesResults = ({ favorites }: { favorites: string[] }) => {
   const { removeFavorite } = useFavorites();
   return (
     <>
@@ -82,7 +82,7 @@ const favoritesResults = ({ favorites }: {favorites:string[]}) => {
               }}
               style={({ pressed }) => [
                 styles.rowButton,
-                { backgroundColor: pressed ? "#695DA2" : "transparent" },
+                { backgroundColor: pressed ? Theme.colors.purple : "transparent" },
               ]}
             >
               {/* Display the city and country. Assumes the favorite string is "City,Country" */}
@@ -140,12 +140,12 @@ const styles = StyleSheet.create({
   },
   rowText: {
     fontSize: 16,
-    color: Theme.base.lightA0,
+    color: Theme.colors.white,
     padding: 10,
   },
   infoText: {
     fontSize: 16,
-    color: Theme.base.lightA0,
+    color: Theme.colors.white,
     padding: 10,
   },
 });

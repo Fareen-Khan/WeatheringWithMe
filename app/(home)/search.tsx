@@ -1,32 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { View, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView } from "react-native";
-import { router } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
-import { SafeAreaView } from "react-native-safe-area-context";
-import { getListofCities } from "@/api/weather";
-import { GeoResponse } from "@/utils/types";
-import { Theme } from "@/styles/Colors"
 import { LocationRow } from "@/components/locationRow";
+import useLocationSearch from "@/hooks/useLocationSearch";
+import { Theme } from "@/styles/Colors";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useState } from "react";
+import { ImageBackground, Pressable, ScrollView, StyleSheet, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Search() {
   const [location, setLocation] = useState("");
-  const [locationResults, setLocationResults] = useState<GeoResponse[] | { cod: number; message: string }>([]);
+  const {locationResults, error} = useLocationSearch(location)
 
-  useEffect(() => {
-    if (location.trim() === "") {
-      console.log("location is empty showing favorites")
-      return
-    }
-    const getResults = async () => {
-      try {
-        const searchResults = await getListofCities(location);
-        setLocationResults(searchResults);
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-      }
-    };
-    getResults()
-  }, [location])
   return (
     <ImageBackground
       source={require("@/assets/images/night_time.png")}
@@ -35,16 +19,16 @@ export default function Search() {
       blurRadius={10}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={[styles.container]}>
-          <Pressable onPress={() => router.back()}>
-            <Feather name="arrow-left" size={20} color="white" />
+        <View style={styles.container} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+          <Pressable onPress={() => router.back()} >
+            <Feather name="arrow-left" size={20} color={Theme.colors.white} />
           </Pressable>
           <TextInput
             style={styles.textInput}
             onChangeText={setLocation}
             value={location}
             placeholder="Enter A Location"
-            placeholderTextColor={Theme.base.lightA0}
+            placeholderTextColor={Theme.colors.white}
             autoFocus={true}
           />
         </View>
@@ -52,12 +36,12 @@ export default function Search() {
           {(!location || location.trim() === "") ? (
             <LocationRow isFavorite={true} data={[]} />
           ) : (
-            !Array.isArray(locationResults) && locationResults.cod === 400 ? (
+            error ? (
               <></>
             ) : (
               Array.isArray(locationResults) &&
               <>
-                <LocationRow isFavorite={false} data={locationResults as GeoResponse[]} />
+                <LocationRow isFavorite={false} data={locationResults} />
               </>
             )
           )
@@ -88,12 +72,12 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: Theme.colors.lighterGray,
     paddingHorizontal: 8,
     borderRadius: 4,
     marginHorizontal: 8,
     padding: 10,
-    color: Theme.base.lightA0,
+    color: Theme.colors.white,
   },
   searchContainer: {
     flexDirection: "row",

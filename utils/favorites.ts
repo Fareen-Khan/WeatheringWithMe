@@ -43,7 +43,6 @@ const removeFavoriteLocation = async (location: string) => {
 	}
 }
 
-
 export const useFavorites = () => {
 	const [favorites, setFavorites] = useState<string[]>([])
 
